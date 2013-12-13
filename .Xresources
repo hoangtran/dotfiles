@@ -1,0 +1,79 @@
+! Colors
+#include "/home/hoangtran/.xcolors/jasonwryan.low"
+!#include "/home/hoangtran/.xcolors/solarized"
+
+! Fonts
+Xft.antialias: true
+Xft.hinting:   true
+Xft.rgba:      rgb
+Xft.hintstyle: hintfull
+
+! Urxvt
+!URxvt*font:     -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
+!URxvt*boldFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
+URxvt*font: xft:Monaco:pixelsize=13:antialias=true:hinting=true
+URxvt*boldFont: xft:Monaco:pixelsize=13:antialias=true:hinting=true
+
+URxvt*scrollBar:  false
+URxvt*jumpScroll: true
+URxvt*skipScroll: true
+URxvt*visualBell: false
+
+URxvt*depth:       32
+URxvt*buffered:    true
+URxvt*foreground:  #dcdccc
+URxvt*background:  #222222
+URxvt*transparent: true
+URxvt*fading:      2%
+URxvt*fadeColor:   grey
+URxvt*shading:     20
+!URxvt*cursorColor: black
+!URxvt*inputMethod: SCIM
+!URxvt*background:              S_base03
+!URxvt*foreground:              S_base0
+!URxvt*fading:                  10
+!URxvt*fadeColor:               S_base03
+!URxvt*cursorColor:             S_base1
+!URxvt*pointerColorBackground:  S_base01
+!URxvt*pointerColorForeground:  S_base1
+
+URxvt*intensityStyles: true
+URxvt*termName:        rxvt-256color
+URxvt*urgentOnBell:    true
+URxvt*secondaryScroll: true
+
+URxvt.perl-lib: /usr/lib/urxvt/perl
+URxvt.perl-ext-common:  default,keyboard-select,url-select,clipboard
+URxvt.keysym.M-Escape:  perl:keyboard-select:activate
+URxvt.keysym.M-s:       perl:keyboard-select:search
+URxvt.keysym.M-u: 	perl:url-select:select_next
+URxvt.url-select.autocopy: true
+URxvt.url-select.launcher: /usr/bin/firefox
+URxvt.url-select.button: 1
+URxvt.url-select.underline: true
+URxvt.keysym.M-c:	perl:clipboard:copy
+URxvt.keysym.M-v:	perl:clipboard:paste
+URxvt.keysym.M-C-v:	perl:clipboard:paste_escaped
+
+! Xterm
+xterm*Geometry:   100x60
+!xterm*foreground: #909090
+!xterm*background: #303030
+!xterm*font:       -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
+!xterm*boldFont:   -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
+xterm*faceName:   Monaco:pixelsize=13:antialias=true
+xterm*scrollBar:  false
+xterm*termName:   xterm-256color
+xterm*background: rgba:0000/0000/0000/dddd
+xterm*foreground: #dcdccc
+
+! Xmessage
+Xmessage*font:                  -xos4-terminus-*-*-*-*-*-*-*-*-*-*-iso8859-2
+Xmessage*background:            #303030
+Xmessage*foreground:            #909090
+Xmessage*form.*.shapeStyle:     rectangle
+Xmessage*Scrollbar.width:       0
+Xmessage*Scrollbar.borderWidth: 0
+Xmessage*Buttons:               Quit
+Xmessage*defaultButton:         Quit
+

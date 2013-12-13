@@ -1,0 +1,52 @@
+# Author     : Hoang Tran <hoang.tran@vnoss.org
+# Version    : 1.1
+# Last Change: Aug 03, 2009
+
+# Predefined style option k&r(-A3) or linux(-A8)
+#--style=k&r           
+--style=linux          
+
+# Indent using 4 spaces per indent. Don’t use tab -s4
+#--indent=spaces=4
+# Indent using tab as 8 spaces -T8
+--indent=force-tab=8
+
+# Break brackets from namespace, class and function definitions,
+# but attach brackets to statements within a function -l
+--brackets=linux
+
+# Indent ‘switch’ blocks so that the ‘case X:’ statement are
+# indented in the switch block. -S
+#--indent-switches
+
+# Indent multi-line preprocessor definitions ending with a backslash -w
+--indent-preprocessor
+
+# Indent C++ comments beginning in colume one -Y
+--indent-col1-comments
+
+# Set the  maximum of # spaces to indent a continuation line -M70
+--max-instatement-indent=70
+
+# Set the minimal indent that is added when a header is built of multiple lines -m0
+--min-conditional-indent=0
+
+# Pad empty lines around header blocks (eg. ‘if’, ‘while’ ...) -f
+--break-blocks
+
+# Delete empty lines within a function or method. -x
+#--delete-empty-lines
+
+# Insert space padding around operators. -p
+--pad-oper
+
+--pad-header
+
+# Remove extra space padding around parenthesis on the inside and outside -U
+--unpad-paren
+
+# Converts tabs into spaces in the non-indentation part of the line -c
+#--convert-tabs
+
+# Do not retain a backup of the origional file
+--suffix=none
