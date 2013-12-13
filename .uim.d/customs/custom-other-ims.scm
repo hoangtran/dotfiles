@@ -1,0 +1,7 @@
+(define generic-im-default-state-on? #t)
+(define generic-use-candidate-window? #f)
+(define generic-candidate-op-count 1)
+(define generic-nr-candidate-max 3)
+(define generic-commit-candidate-by-numeral-key? #f)
+(define generic-show-candidate-implicitly? #t)
+(define generic-show-prediction-candidates? #f)
