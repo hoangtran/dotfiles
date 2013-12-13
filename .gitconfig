@@ -1,0 +1,38 @@
+[user]
+	name = Hoang Tran
+	email = hoang.tran@greenwavereality.com
+[color]
+	branch = auto
+	diff = auto
+	grep = auto
+	interactive = auto
+	status = auto
+[alias]
+	la = !git config -l | grep alias | cut -c 7-
+	last = cat-file commit HEAD
+	st = status
+	ci = commit
+	co = checkout
+	chp = cherry-pick
+	b = branch
+	dc = diff --cached
+	r = reset
+	rh = reset --hard
+	rs = reset --soft
+	unstage = reset HEAD --
+	fl = log -u
+	filelog = log -u
+	pfr = push origin HEAD:refs/for/master
+[merge]
+	tool = meld
+[diff]
+	tool = meld
+[branch]
+	autosetuprebase = always
+[credential]
+	helper = cache --timeout=3600
+[sendemail]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = hoang.tran@greenwavereality.com
+	smtpserverport = 587
