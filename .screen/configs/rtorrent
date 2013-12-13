@@ -1,0 +1,2 @@
+#example: screen -t [name] [command]
+screen -t torrents 1 rtorrent

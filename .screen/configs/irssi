@@ -1,0 +1,3 @@
+#example: screen -t [name] [command]
+screen -t irssi 1 irssi
+select 1

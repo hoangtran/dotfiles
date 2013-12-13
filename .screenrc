@@ -1,0 +1,82 @@
+# ~/.screenrc
+
+#escape ``
+#escape `e
+
+term screen-256color
+#term xterm-256color
+
+altscreen on
+autodetach on
+bufferfile "$HOME/.screen/exchange"
+encoding UTF-8
+nonblock on
+setenv LC_CTYPE en_US.UTF-8
+startup_message off
+vbell off
+
+#change the hardstatus settings to give an window list at the bottom of the
+#screen, with the time and date and with the current window highlighted
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+sorendition kw
+
+defscrollback 50000
+
+# Banish screen 0, it sucks
+bind c screen 1 
+bind ^c screen 1
+bind 0 select 10
+
+# open environment-specific apps
+source "$SCREEN_CONF_DIR/$SCREEN_CONF"
+
+# keybindings
+
+# remove some stupid / dangerous key bindings
+bind ^k
+bind ^\
+
+# make them better
+bind Q quit
+bind K kill
+bind } history
+
+# Banish stupid s default behavior, make it more useful
+# find the nearest shell
+bind s select bash 
+#bind s split -v
+#bind s
+
+# Be lazy and use Fx keys for screen switching
+bindkey -k k1 select 1
+bindkey -k k2 select 2
+bindkey -k k3 select 3
+bindkey -k k4 select 4
+
+bindkey "^[Od" prev  # change window with ctrl-left
+bindkey "^[Oc" next  # change window with ctrl-right
+
+bind = resize =
+bind + resize +1
+bind - resize -1
+bind _ resize max
+
+#bind j focus down
+#bind k focus up
+#bind h focus left
+#bind l focus right
+
+bind J resize +5
+bind K resize -5
+
+#bind ^A focus
+
+# make scroll work
+termcapinfo rxvt-256color ti@:te@
+termcapinfo xterm-256color ti@:te@
+
+# make colors work
+termcapinfo xterm-256color 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo rxvt-256color 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+

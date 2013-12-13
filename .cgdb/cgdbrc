@@ -1,0 +1,5 @@
+set autosourcereload
+set arrowstyle=long
+set showtgdbcommands
+set winsplit=top_big
+highlight SelectedLineNr ctermfg=Blue

@@ -1,0 +1,6 @@
+#example: screen -t [name] [command]
+screen -t bash 1
+screen -t bash 2
+screen -t bash 3
+screen -t bash 4
+select 1
