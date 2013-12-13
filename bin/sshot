@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# a general scrot wrapper script
+#
+###
+
+message() { echo 'usage: sshot [ -n <name> ] [ -f ] [ scrot options ]'; exit 1; }
+
+shots_dir='~/pictures/screenshots'
+name="desktop_$(date +%y%m%d%H%M)"
+
+# grab some options for us, pass anything
+# else directly to scrot
+while [ -n "$1" ]; do
+  case $1 in
+    -h|--help)  message          ;;
+    -n|--name)  shift; name="$1" ;;
+    *)          		 ;; 
+  esac
+  shift
+done
+
+shot="$shots_dir/${name// /_}.png"
+scrot "$shot" || exit 1
+
