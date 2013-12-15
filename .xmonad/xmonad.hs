@@ -50,6 +50,7 @@ import XMonad.Hooks.SetWMName
 
 -- Theme {{{
 myFont       = "Verdana-9"       -- xft-enabled dzen required (aur/dzen2-svn)
+conkyFile    = "~/.dzen_conkyrc" -- populates right status bar via conky -c | dzen2
 
 colorBG      = "#303030"         -- background
 colorFG      = "#606060"         -- foreground
@@ -60,6 +61,7 @@ colorUrg2    = "#c4df90"         -- urgent, lime
 
 barHeight    = 18
 monitorWidth = 1920              -- two statusbars will span this width 
+leftBarWidth = 960               -- right bar will span difference
 
 -- }}}
 
@@ -98,7 +100,8 @@ makeDzen x y w h a = "dzen2 -p" ++
                      " -bg '"   ++ colorBG ++ "' -e 'onstart=lower'"
 
 -- define the bars
-myLeftBar  = makeDzen 0 0 monitorWidth barHeight "l"
+myLeftBar  = makeDzen 0 0 leftBarWidth barHeight "l"
+myRightBar = "conky -c " ++ conkyFile ++ " | " ++ makeDzen leftBarWidth 0 (monitorWidth - leftBarWidth) barHeight "r"
 
 -- }}}
 
@@ -481,5 +484,5 @@ main = do
       spawnList = mapM_ spawn
 
       -- apps to start along with xmonad
-      myStartupApps = []
+      myStartupApps = [myRightBar]
 -- }}}
