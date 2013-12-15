@@ -13,7 +13,7 @@
 ###
 
 # The directory within which to build.
-build_directory="/home/hoangtran/src"
+build_directory="$HOME/src"
 
 # Should aurget remove the extracted source directory after processing?
 discard_sources=false
