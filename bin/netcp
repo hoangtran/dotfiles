@@ -1,0 +1,25 @@
+
+### Based on http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
+
+#!/usr/bin/bash
+
+if [ "$#" -ne 2 ]; then
+	echo "ncp <src> <u@remote:dest>"
+	exit 1
+fi
+
+SRC=$1
+REMOTE=$(echo $2 | awk -F: '{ print $1 }')
+DST=$(echo $2 | awk -F: '{ print $2 }')
+
+if [ -z "$DST" ]; then DST="~"; fi
+
+SRCDIR=$(dirname $SRC)
+SRCNAME=$(basename $SRC)
+LOCALHOST=$(hostname)
+
+ZIP_TOOL=pigz
+NC_PORT=8888
+
+tar -cf - -C $SRCDIR $SRCNAME | pv -s `du -sb $SRC | awk '{s += $1} END {printf "%d", s}'` | $ZIP_TOOL | netcat -l -p $NC_PORT &
+ssh $REMOTE "netcat $LOCALHOST $NC_PORT | $ZIP_TOOL -d | tar xf - -C $DST"
