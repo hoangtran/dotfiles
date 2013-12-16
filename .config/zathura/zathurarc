@@ -1,0 +1,16 @@
+# ~/.config/zathura/zathurarc
+#
+
+set adjust-open bestfit
+set show-scrollbars false
+set page-padding 5
+set pages-per-row 1
+set window-title-basename true
+
+map w adjust_window width
+map z adjust_window bestfit
+
+map + zoom in
+map - zoom out
+
+map <C-p> print

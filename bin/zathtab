@@ -1,0 +1,11 @@
+#!/bin/bash 
+
+PID=`pgrep tabbed`
+TABBED_FILE="/tmp/tabbed.xid"
+IFS=
+
+if ! [ -n "$PID" ]; then 
+	tabbed -d >$TABBED_FILE
+fi
+
+zathura -e $(<$TABBED_FILE) $*
