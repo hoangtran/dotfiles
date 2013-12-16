@@ -139,10 +139,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  ) -- Swap the focused window with the next window
     , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    ) -- Swap the focused window with the previous window
 
-    , ((modm,               xK_h     ), focusScreen 0)      -- focus left screen 0
-    , ((modm,               xK_l     ), focusScreen 1)      -- focus left screen 1
-    , ((modm .|. shiftMask, xK_h     ), sendMessage Shrink) -- Shrink the master area
-    , ((modm .|. shiftMask, xK_l     ), sendMessage Expand) -- Expand the master area
+    , ((modm .|. shiftMask, xK_h     ), focusScreen 0)      -- focus left screen 0
+    , ((modm .|. shiftMask, xK_l     ), focusScreen 1)      -- focus left screen 1
+    , ((modm,               xK_h     ), sendMessage Shrink) -- Shrink the master area
+    , ((modm,               xK_l     ), sendMessage Expand) -- Expand the master area
     
     , ((modm .|. shiftMask, xK_t     ), withFocused $ windows . W.sink) -- Push window back into tiling
     , ((modm,               xK_f     ), jumpToFull)                     -- Push window to full layout
