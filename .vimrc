@@ -8,6 +8,7 @@
 
 "Get out of VI's compatible mode..
 set nocompatible
+filetype off
 
 "Sets how many lines of history VIM har to remember
 set history=400
@@ -75,8 +76,6 @@ set smartcase
 
 syntax enable
 
-filetype off
-
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
@@ -87,6 +86,7 @@ Bundle 'jlanzarotta/bufexplorer'
 Bundle 'OmniCppComplete'
 Bundle 'taglist.vim'
 Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'fugitive.vim'
 
 "Enable filetype plugin
 filetype plugin indent on
