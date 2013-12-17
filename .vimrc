@@ -75,6 +75,19 @@ set smartcase
 
 syntax enable
 
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'jlanzarotta/bufexplorer'
+Bundle 'OmniCppComplete'
+Bundle 'taglist.vim'
+Bundle 'git://git.wincent.com/command-t.git'
+
 "Enable filetype plugin
 filetype plugin indent on
 
@@ -243,9 +256,6 @@ map <leader>q :e ~/buffer<cr>
 
 set pastetoggle=<F10>
 
-"Pathogen
-call pathogen#runtime_append_all_bundles()
-
 "colorscheme warez
 set background=dark
 colorscheme inkpot
@@ -253,7 +263,7 @@ colorscheme inkpot
 "bufexplorer.vim stuff
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
-map <leader>o :BufExplorer<cr>
+"let g:bufExplorerSortBy = "name"
 
 "minibufexpl.vim stuff
 "let g:miniBufExplModSelTarget = 1
@@ -263,11 +273,7 @@ map <leader>o :BufExplorer<cr>
 "let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplVSplit = 22
 "let g:miniBufExplSplitBelow=1
-
-"let g:bufExplorerSortBy = "name"
-
 "autocmd BufRead,BufNew :call UMiniBufExplorer
-
 "map <leader>u :TMiniBufExplorer<cr>
 
 "fuzzyfinder.vim stuff
