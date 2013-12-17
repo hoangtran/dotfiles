@@ -80,13 +80,19 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
-Bundle 'L9'
+
 Bundle 'FuzzyFinder'
-Bundle 'jlanzarotta/bufexplorer'
+Bundle 'L9'
 Bundle 'OmniCppComplete'
-Bundle 'taglist.vim'
+Bundle 'The-NERD-tree'
 Bundle 'git://git.wincent.com/command-t.git'
-Bundle 'fugitive.vim'
+Bundle 'jlanzarotta/bufexplorer'
+Bundle 'kien/ctrlp.vim'
+Bundle 'taglist.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-pathogen'
+
+execute pathogen#infect('pundle/{}')
 
 "Enable filetype plugin
 filetype plugin indent on
@@ -265,19 +271,8 @@ let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
 "let g:bufExplorerSortBy = "name"
 
-"minibufexpl.vim stuff
-"let g:miniBufExplModSelTarget = 1
-"let g:miniBufExplorerMoreThanOne = 2
-"let g:miniBufExplModSelTarget = 0
-"let g:miniBufExplUseSingleClick = 1
-"let g:miniBufExplMapWindowNavVim = 1
-"let g:miniBufExplVSplit = 22
-"let g:miniBufExplSplitBelow=1
-"autocmd BufRead,BufNew :call UMiniBufExplorer
-"map <leader>u :TMiniBufExplorer<cr>
-
 "fuzzyfinder.vim stuff
-map <leader>t :FufFileWithFullCwd **/<CR>
+map <leader>f :FufFileWithFullCwd **/<CR>
 
 au BufNewFile,BufRead ~/.mutt/temp/* setlocal ft=mail
 
