@@ -334,6 +334,11 @@ endfunction
 "Command-T stuff
 let g:CommandMaxFiles=40000
 
+"Ctrl-P stuff
+let g:ctrlp_max_files = 10000
+let g:ctrlp_max_depth = 10
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
+
 "map _u :call ID_search()<Bar>execute "/\\<" . g:word . "\\>"<CR>
 "map _n :n<Bar>execute "/\\<" . g:word . "\\>"<CR>
 "
