@@ -81,8 +81,6 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 
-Bundle 'FuzzyFinder'
-Bundle 'L9'
 Bundle 'OmniCppComplete'
 Bundle 'The-NERD-tree'
 Bundle 'git://git.wincent.com/command-t.git'
@@ -271,9 +269,6 @@ let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
 "let g:bufExplorerSortBy = "name"
 
-"fuzzyfinder.vim stuff
-map <leader>f :FufFileWithFullCwd **/<CR>
-
 au BufNewFile,BufRead ~/.mutt/temp/* setlocal ft=mail
 
 "mail options {{{
@@ -301,9 +296,6 @@ nnoremap <silent> <F7> :NERDTreeToggle<CR>
 
 "find recursively tags
 set tags=tags;/
-
-"perforce not start
-let g:p4EnableActiveStatus = 0
 
 "scim stuff
 function! Vietnamese()
@@ -340,7 +332,7 @@ endfunction
 "let g:SuperTabMappingTabLiteral='<c-v>'
 
 "Command-T stuff
-"let g:CommandMaxFiles=40000
+let g:CommandMaxFiles=40000
 
 "map _u :call ID_search()<Bar>execute "/\\<" . g:word . "\\>"<CR>
 "map _n :n<Bar>execute "/\\<" . g:word . "\\>"<CR>
