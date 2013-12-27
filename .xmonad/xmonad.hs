@@ -119,10 +119,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_m     ), spawn myMail)                 -- open mail client
     , ((modm .|. shiftMask, xK_i     ), spawn myIRC)                  -- open/attach IRC client in screen
     , ((modm,               xK_o     ), scratchPad)                   -- open quick scratchpad
-    , ((modm .|. shiftMask, xK_o     ), restart "/home/httran/bin/obtoxmd" True) -- openbox!!!
-    --, ((modm              , xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"") -- launch dmenu
-    , ((modm              , xK_p     ), spawn "dmenu_run") -- launch dmenu
-    , ((modm .|. shiftMask, xK_s     ), spawn "skype")                -- open skype 
+    , ((modm,               xK_p     ), spawn "dmenu_run")            -- launch dmenu
+    , ((modm,               xK_s     ), spawn "skype")                -- open skype 
 
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun") -- launch gmrun
     , ((modm,               xK_c     ), kill) -- close focused window
