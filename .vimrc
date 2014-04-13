@@ -404,3 +404,14 @@ nmap <silent> <leader>P :call Paste(1, 1)<cr>
 nmap <silent> <leader>gp :call Paste(0, 0)<cr>
 nmap <silent> <leader>gP :call Paste(1, 0)<cr>
 
+cnoremap sudow w !sudo tee % >/dev/null
+
+" Use r for [right-angle braces] and a for <angle braces> like vim-surround
+vnoremap ir i]
+vnoremap ar a]
+vnoremap ia i>
+vnoremap aa a>
+onoremap ir i]
+onoremap ar a]
+onoremap ia i>
+onoremap aa a>
