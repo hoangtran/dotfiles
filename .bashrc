@@ -25,6 +25,7 @@ shopt -s extglob
 export BROWSER='firefox'
 export EDITOR=vim
 export BUILDROOT_DL_DIR=/src
+export BR2_DL_DIR=/src
 export LEGO_DOWNLOAD_DIR=/src
 export LEGO_TOOLCHAIN_BASE=/toolchains/gwr
 export LESS='-R'

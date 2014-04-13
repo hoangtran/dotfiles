@@ -89,6 +89,7 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'taglist.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-pathogen'
+Bundle 'airblade/vim-gitgutter'
 
 execute pathogen#infect('pundle/{}')
 
@@ -211,6 +212,14 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufRead,BufNewFile *.txt setlocal ft=txt
 
+"replace multiple empty lines by single empty line.
+func! ReplaceMultiEmptyLines()
+  exe "normal mz"
+  %s/\s\+$//ge
+  %s/\n\{3,}/\r\r/ge
+  exe "normal `z"
+endfunc
+
 "Specify the behavior when switching between buffers
 "try
 "    set switchbuf=usetab
@@ -263,6 +272,8 @@ set pastetoggle=<F10>
 "colorscheme warez
 set background=dark
 colorscheme inkpot
+
+highlight clear SignColumn
 
 "bufexplorer.vim stuff
 let g:bufExplorerDefaultHelp=0
