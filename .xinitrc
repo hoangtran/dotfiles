@@ -15,5 +15,6 @@ xsetroot -cursor_name left_ptr              # req'd for xmonad's cursor
 (sleep 3 && xmodmap $HOME/.Xmodmap) &       # remove capslock
 unclutter &				    # hide mouse cursors
 uim-xim &
+xcape -e 'Control_L=Escape' &		    # press then release will send esc.
 
 xmonad		                            # start xmonad

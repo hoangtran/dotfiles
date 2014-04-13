@@ -298,7 +298,7 @@ do_ppc()
 do_arm()
 {
     export ARCH=arm
-    export CROSS_COMPILE=arm-greenwave-linux-gnueabi-
+    export CROSS_COMPILE=arm-greenwave-linux-gnueabihf-
     export GWRTOOLCHAIN=$LEGO_TOOLCHAIN_BASE/arm-cortex-a9_linaro-gcc47
     _add_to_path "$GWRTOOLCHAIN/bin"
 }

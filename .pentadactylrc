@@ -14,6 +14,7 @@ map <leader>bd :bd<cr>
 autocmd LocationChange mail.google.com :normal! <C-z>
 autocmd LocationChange google.com/reader :normal! <C-z>
 autocmd LocationChange plus.google.com :normal! <C-z>
+autocmd LocationChange feedly.com :normal! <C-z>
 
 com! rl -javascript
     \ -desc 'Send current page to Instapaper'
