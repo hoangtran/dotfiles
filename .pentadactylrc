@@ -15,23 +15,24 @@ autocmd LocationChange mail.google.com :normal! <C-z>
 autocmd LocationChange google.com/reader :normal! <C-z>
 autocmd LocationChange plus.google.com :normal! <C-z>
 autocmd LocationChange feedly.com :normal! <C-z>
+autocmd LocationChange facebook.com :normal! <C-z>
 
-com! rl -javascript
-    \ -desc 'Send current page to Instapaper'
-    \ try {
-    \     let doc = content.document;
-    \     dactyl.assert(doc.body);
-    \     doc.title = '(Saving...) ' + d.title;
-    \     doc.body.appendChild(util.xmlToDom(
-    \         <script type="application/javascript"
-    \                 src="http://www.instapaper.com/j/JvB40iSOjqkv"/>,
-    \         doc));
-    \ }
-    \ catch(e) {
-    \     dactyl.echoerr('Please wait until the page has loaded.');
-    \ } 
-
-command! instapaper :open javascript:function%20iprl5(){var%20d=document,z=d.createElement('scr'+'ipt'),b=d.body,l=d.location;try{if(!b)throw(0);d.title='(Saving...)%20'+d.title;z.setAttribute('src',l.protocol+'//www.instapaper.com/j/JvB40iSOjqkv?u='+encodeURIComponent(l.href)+'&t='+(new%20Date().getTime()));b.appendChild(z);}catch(e){alert('Please%20wait%20until%20the%20page%20has%20loaded.');}}iprl5();void(0)
+"com! rl -javascript
+"    \ -desc 'Send current page to Instapaper'
+"    \ try {
+"    \     let doc = content.document;
+"    \     dactyl.assert(doc.body);
+"    \     doc.title = '(Saving...) ' + d.title;
+"    \     doc.body.appendChild(util.xmlToDom(
+"    \         <script type="application/javascript"
+"    \                 src="http://www.instapaper.com/j/JvB40iSOjqkv"/>,
+"    \         doc));
+"    \ }
+"    \ catch(e) {
+"    \     dactyl.echoerr('Please wait until the page has loaded.');
+"    \ } 
+"
+"command! instapaper :open javascript:function%20iprl5(){var%20d=document,z=d.createElement('scr'+'ipt'),b=d.body,l=d.location;try{if(!b)throw(0);d.title='(Saving...)%20'+d.title;z.setAttribute('src',l.protocol+'//www.instapaper.com/j/JvB40iSOjqkv?u='+encodeURIComponent(l.href)+'&t='+(new%20Date().getTime()));b.appendChild(z);}catch(e){alert('Please%20wait%20until%20the%20page%20has%20loaded.');}}iprl5();void(0)
 
 nmap <C-i> :instapaper<CR>
 

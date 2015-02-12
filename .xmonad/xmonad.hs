@@ -59,7 +59,7 @@ colorFG3     = "#c4df90"         -- foreground w/ strong emphasis
 colorUrg     = "#cc896d"         -- urgent, peach
 colorUrg2    = "#c4df90"         -- urgent, lime
 
-barHeight    = 18
+barHeight    = 22
 monitorWidth = 1920              -- two statusbars will span this width 
 leftBarWidth = 960               -- right bar will span difference
 
@@ -191,7 +191,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         myScreen s = myTerminal ++ " -title "                    ++ s
 				++ " -e bash -cl \"SCREEN_CONF=" ++ s 
 				++ " screen -S "                 ++ s 
-				++ " -R -D "                     ++ s 
+				++ " -R -D "
 				++ "\""
 
 	scratchPad = scratchpadSpawnActionTerminal myTerminal
@@ -416,7 +416,7 @@ myLogHook h = (dynamicLogWithPP $ defaultPP
     dzenFGL c = dzenColorL c "" 
 
     -- custom loggers
-    myMail     = wrapL "Mail: " ""  . dzenFGL colorFG2 $ maildirNew "/home/httran/mail/gwr/INBOX"
+    myMail     = wrapL "Mail: " ""  . dzenFGL colorFG2 $ maildirNew "/home/hoangtran/.mail/gwrg/INBOX"
     --myMail     = wrapL "Mail: " ""  . dzenFGL colorFG2 $ logCmd "cat /home/httran/.newmessages"
     --myUpdates  = logCmd "$HOME/bin/logger-updates"
     --myTorrents = logCmd "$HOME/bin/logger-torrents"

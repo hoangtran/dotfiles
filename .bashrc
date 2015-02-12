@@ -13,7 +13,8 @@ _have() { which "$1" &>/dev/null; }
 
 [[ -f $HOME/.dircolors ]] && eval $(/bin/dircolors -b $HOME/.dircolors)
 
-source ~/.git-prompt.sh
+source /usr/share/git/git-prompt.sh
+source /usr/share/bash-completion/completions/git
 
 set -o notify           # Tell me when bg proccess finish
 set -o noclobber        # Warn of over write on redirects
@@ -301,7 +302,7 @@ do_arm()
     export ARCH=arm
     export CROSS_COMPILE=arm-greenwave-linux-gnueabihf-
     export GWRTOOLCHAIN=$LEGO_TOOLCHAIN_BASE/arm-cortex-a9_linaro-gcc47
-    _add_to_path "$GWRTOOLCHAIN/bin"
+    _add_to_path "$GWRTOOLCHAIN/bin" $HOME/src/buildroot/output/host/usr/bin
 }
 
 do_mips()

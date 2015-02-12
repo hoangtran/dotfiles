@@ -23,6 +23,7 @@
 	fl = log -u
 	filelog = log -u
 	pfr = push origin HEAD:refs/for/master
+	lp = log -p --cc --decorate=short
 [merge]
 	tool = meld
 [diff]
