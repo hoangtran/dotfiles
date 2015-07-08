@@ -90,6 +90,7 @@ Bundle 'taglist.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-pathogen'
 Bundle 'airblade/vim-gitgutter'
+Bundle 'tpope/vim-jdaddy.git'
 
 execute pathogen#infect('pundle/{}')
 

@@ -60,8 +60,8 @@ colorUrg     = "#cc896d"         -- urgent, peach
 colorUrg2    = "#c4df90"         -- urgent, lime
 
 barHeight    = 22
-monitorWidth = 1920              -- two statusbars will span this width 
-leftBarWidth = 960               -- right bar will span difference
+monitorWidth = 1200              -- two statusbars will span this width
+leftBarWidth = 600               -- right bar will span difference
 
 -- }}}
 
@@ -113,7 +113,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     [ ((modm,               xK_t     ), spawn $ XMonad.terminal conf) -- launch a terminal
     , ((modm .|. shiftMask, xK_b     ), spawn "firefox")              -- open web client
-    , ((modm .|. shiftMask, xK_g     ), spawn "chromium")             -- open Google Chromium
+    , ((modm .|. shiftMask, xK_g     ), spawn "google-chrome-stable") -- open Google Chromium
     , ((modm .|. shiftMask, xK_u     ), spawn "uzbl-browser")         -- open Uzbl browser
     , ((modm .|. shiftMask, xK_f     ), spawn myFile)                 -- open ranger
     , ((modm .|. shiftMask, xK_m     ), spawn myMail)                 -- open mail client
@@ -137,10 +137,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  ) -- Swap the focused window with the next window
     , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    ) -- Swap the focused window with the previous window
 
-    , ((modm .|. shiftMask, xK_h     ), focusScreen 0)      -- focus left screen 0
-    , ((modm .|. shiftMask, xK_l     ), focusScreen 1)      -- focus left screen 1
-    , ((modm,               xK_h     ), sendMessage Shrink) -- Shrink the master area
-    , ((modm,               xK_l     ), sendMessage Expand) -- Expand the master area
+    , ((modm, 		    xK_h     ), focusScreen 0)      -- focus left screen 0
+    , ((modm,		    xK_l     ), focusScreen 1)      -- focus left screen 1
+    , ((modm .|. shiftMask, xK_h     ), sendMessage Shrink) -- Shrink the master area
+    , ((modm .|. shiftMask, xK_l     ), sendMessage Expand) -- Expand the master area
     
     , ((modm .|. shiftMask, xK_t     ), withFocused $ windows . W.sink) -- Push window back into tiling
     , ((modm,               xK_f     ), jumpToFull)                     -- Push window to full layout
@@ -319,13 +319,13 @@ myManageHook = (composeAll . concat $
     name      = stringProperty "WM_NAME"
 
     -- [ ("class1","role1"), ("class2","role2"), ... ]
-    myIMs     = [("pidgin","roster"),("Skype","roster")] 
+    myIMs     = [("pidgin","roster"),("Skype-bin","roster")]
     -- titles
     myEmat    = ["irssi","mutt","finch","sup"]
 
     -- classnames
     myEmail   = ["Mail","Lanikai"]
-    myFloats  = ["MPlayer","Zenity","VirtualBox","rdesktop","TeamViewer.exe","Wine"]
+    myFloats  = ["MPlayer","Zenity","VirtualBox","rdesktop","TeamViewer.exe","Wine","mpv"]
     myCFloats = ["Xmessage","Save As...","XFontSel","Vncviewer"]
     myVMs     = ["VirtualBox","rdesktop","TeamViewer.exe","Wine"]
 

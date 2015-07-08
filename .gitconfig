@@ -24,6 +24,7 @@
 	filelog = log -u
 	pfr = push origin HEAD:refs/for/master
 	lp = log -p --cc --decorate=short
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 [merge]
 	tool = meld
 [diff]
@@ -37,3 +38,5 @@
 	smtpserver = smtp.gmail.com
 	smtpuser = hoang.tran@greenwavereality.com
 	smtpserverport = 587
+[push]
+	default = simple

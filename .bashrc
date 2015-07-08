@@ -28,10 +28,15 @@ export EDITOR=vim
 export BUILDROOT_DL_DIR=/src
 export BR2_DL_DIR=/src
 export LEGO_DOWNLOAD_DIR=/src
-export LEGO_TOOLCHAIN_BASE=/toolchains/gwr
+export LEGO_TOOLCHAIN_BASE=/opt/gwr
+export LEGO_DONT_BUILD_TOOLCHAIN=1
 export LESS='-R'
 export TFTPDIR=/nfsroot
 export INPUTRC='~/.inputrc'
+export ACROBAT_PATH=/opt/Adobe/Reader9
+export T32SYS=/opt/t32
+export T32TMP=/tmp
+export T32ID=T32
 
 export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
 
@@ -93,7 +98,7 @@ _add_to_path() {
 ### Bash exports {{{
 
 # set path
-_add_to_path "$HOME/bin" "$HOME/oald8" 
+_add_to_path "$HOME/bin" "$HOME/oald8" "$T32SYS/bin/pc_linux64"
 
 # custom log directory
 [[ -d "$HOME/.logs" ]] && export LOGS="$HOME/.logs" || export LOGS='/tmp'
