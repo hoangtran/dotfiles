@@ -1,0 +1,21 @@
+###
+# gwr specific options
+###
+
+color status cyan default
+
+set from      = "hoang.tran@greenwavereality.com"
+set sendmail  = "/usr/bin/msmtp -a gwr"
+set mbox      = "+gwr/INBOX"
+set editor    = "vim +:silent+?^$"                    # use vim and skip to last blank line
+#unset record
+set record    = "+gwr/sent"
+set postponed = "+gwr/drafts"
+set signature = "fortune -s /home/hoangtran/fortune/geek;cat ~/.mutt/avatar|"
+#set signature = "cat ~/.mutt/avatar|"
+
+
+#macro index E "<change-folder>+gwr/archive<enter><limit>~B " "search everything"
+macro index D "<save-message>+gwr/trash<enter>"              "move message to the trash"
+macro index S "<save-message>+gwr/spam<enter>"               "mark message as spam"
+

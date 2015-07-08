@@ -1,0 +1,46 @@
+# vim: ft=muttrc
+macro index,pager ,i "<change-folder>!<return>" "go to inbox"
+macro index ,p "<pipe-message>cat > ~/" "save message as"
+macro index ,z "<shell-escape>offlineimap -q -o<return>" "sync IMAP"
+
+# these are toggle, but i bind both and use them as distinct
+macro index zc      "<collapse-thread>" "collapse thread"
+macro index <space> "<collapse-thread>" "uncollapse thread"
+
+macro index ,r \
+  "<tag-pattern>~N<return><tag-prefix><clear-flag>N<untag-pattern>~T<return>" \
+  "mark all as read"
+
+macro index ,R \
+  "<collapse-all>,r<collapse-all>" \
+  "mark all as read (collapsed)"
+
+macro index ,s \
+  "<shell-escape>notmuch-mutt --prompt search<enter><change-folder-readonly>~/.cache/notmuch/mutt/results<enter>" \
+  "search mail via notmuch"
+
+macro index .i	      "<limit>((~N|~O|~F)!~D)|(~d<1w!~Q)\n"
+macro index .n        "<limit>~N\n"
+macro index .o        "<limit>(~N|~O)\n"
+macro index .a        "<limit>~A\n"
+macro index .t        "<limit>~d<1d\n"
+macro index .y        "<limit>~d<2d ~d>1d\n"
+
+# macros
+macro index z "<change-folder>?" "view folders"
+macro index B "<limit>~b " "search message bodies"
+
+macro index <F8> "<enter-command>unset wait_key<enter><shell-escape>mutt-notmuch --prompt search<enter><change-folder-readonly>~/.cache/mutt_results<enter>" \
+                 "search mail (using notmuch)"
+macro index <F9> \
+	"<enter-command>unset wait_key<enter><enter-command>unignore message-id<enter><pipe-message>mutt-notmuch thread<enter><change-folder-readonly>~/.cache/mutt_results<enter><enter-command>set wait_key<enter>" \
+	"search and reconstruct owning thread (using notmuch)"
+
+# abook support
+#macro generic,index,pager \Ca "<shell-escape>abook<return>" "launch abook"
+#macro index,pager         A   "<pipe-message>abook --add-email<return>" "add sender to abook"
+macro generic,index,pager \Ca "!abook_export\n:source ~/.mutt/aliases\n" "Start abook"
+macro index,pager A \
+	"|abook_export --add-email-quiet\n:source ~/.mutt/aliases\n" \
+	"Create new alias from the actual message"
+

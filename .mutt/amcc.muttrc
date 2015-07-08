@@ -1,0 +1,18 @@
+###
+# amcc specific options
+###
+
+color status cyan default
+
+set from      = "httran@apm.com"
+set sendmail  = "/usr/bin/msmtp -a amcc"
+set mbox      = "+amcc/INBOX"
+set editor    = "vim +:silent+/^$"		# use vim and skip to first blank line
+#unset record
+set record    = "+amcc/sent"
+set postponed = "+amcc/drafts"
+
+set signature = ~/.mutt/apm.sig			# my signature file
+
+macro index D "<save-message>+amcc/trash<enter>"              "move message to the trash"
+macro index S "<save-message>+amcc/spam<enter>"               "mark message as spam"

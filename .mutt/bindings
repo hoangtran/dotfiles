@@ -1,0 +1,49 @@
+# vim: ft=muttrc
+# these just give me headaches
+bind index,pager \# noop
+bind index,pager \& noop
+bind index i  noop
+
+# bindings -- very vim-like
+bind index gg first-entry
+bind index G  last-entry
+bind index N  search-opposite
+bind index K  previous-unread
+bind index J  next-unread
+bind index k  previous-entry
+bind index j  next-entry
+bind index l  display-message
+bind index <right> display-message
+bind index R  group-reply
+bind index T  tag-thread
+bind index x  collapse-thread
+bind index X  collapse-all
+
+bind pager i  exit
+bind pager q  toggle-quoted
+bind pager /  search
+bind pager j  next-line
+bind pager k  previous-line
+bind pager gg top
+bind pager G  bottom
+bind pager <up> previous-line
+bind pager <down> next-line
+bind pager <left> exit
+bind pager <right> view-attachments
+bind pager K  previous-undeleted
+bind pager J  next-undeleted
+bind pager R  group-reply
+bind pager D  delete-thread
+
+bind index,pager h    help
+bind index,pager \Cf  next-page
+bind index,pager \Cb  previous-page
+bind index,pager \Cu  half-up
+bind index,pager \Cd  half-down
+bind index,pager ?    search-reverse
+
+#bind attach <left>    exit
+#bind attach <right>   view-attach
+#bind browser <left>   exit
+#bind browser <right>  select-entry
+

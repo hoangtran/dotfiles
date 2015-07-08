@@ -50,7 +50,7 @@ set lazyredraw         "no readraw when running macros
 "set mouse=n            "mouse only in normal mode support in vim
 
 function! CurDir()
-    let curdir = substitute(getcwd(), '/home/httran/', "~/", "g")
+    let curdir = substitute(getcwd(), '/home/hoangtran/', "~/", "g")
     return curdir
 endfunction
 

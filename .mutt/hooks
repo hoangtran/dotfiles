@@ -1,0 +1,14 @@
+# vim: ft=muttrc
+# override with account specific folder-hooks
+folder-hook gwrg/*      source ~/.mutt/accounts/gwrg
+folder-hook * "exec collapse-all"
+
+folder-hook .      push '.i'
+
+source ~/.mutt/accounts/gwrg # default account
+
+# cc myself when replying to an ML; note: with this, you can't just :q!
+# mid-compose to abort; instead, just :wq and abort from the compose menu
+#unhook send-hook
+#send-hook "~u" "push '<edit-cc>,@gwr.org<enter>'"
+

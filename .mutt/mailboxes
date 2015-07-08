@@ -1,0 +1,5 @@
+mailboxes +--GWRG---- +gwrg/INBOX
+mailboxes +gwrg/sent +gwrg/trash 
+mailboxes +--VNOSS--- +vnoss/INBOX
+mailboxes +vnoss/sent +vnoss/trash 
+mailboxes +vnoss/buildroot

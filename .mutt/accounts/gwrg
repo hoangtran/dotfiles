@@ -1,0 +1,12 @@
+# vim: ft=muttrc
+set from          = "hoangtran.gwr@gmail.com"
+set sendmail      = "/usr/bin/msmtp -a gwrg"
+set mbox          = "+gwrg/INBOX"
+set postponed     = "+gwrg/drafts"
+
+color status green default
+
+macro index ,c "<change-folder>+gwrg/INBOX<return>" "change accounts"
+macro index D "<save-message>+gwrg/trash<enter>" "move message to the trash"
+macro index S "<save-message>+gwrg/spam<enter>"  "mark message as spam"
+
