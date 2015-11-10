@@ -3,7 +3,7 @@
 # ~/.xinitrc
 #
 
-eval `cat $HOME/.fehbg` &                   # set background
+sh $HOME/.fehbg &                           # set background
 numlockx on &                               # numlock on
 setxkbmap -option terminate:ctrl_alt_bksp & # C-A-BS to kill X
 urxvtd -q -f -o &                           # start urxvt daemon

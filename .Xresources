@@ -1,5 +1,6 @@
 ! Colors
-#include "/home/hoangtran/.xcolors/jasonwryan.low"
+!#include "/home/hoangtran/.xcolors/jasonwryan.low"
+#include "/home/hoangtran/.xcolors/hybrid"
 !#include "/home/hoangtran/.xcolors/solarized"
 
 ! Fonts
@@ -77,3 +78,5 @@ Xmessage*Scrollbar.borderWidth: 0
 Xmessage*Buttons:               Quit
 Xmessage*defaultButton:         Quit
 
+Xcursor.theme: gentoo
+!Xcursor.size: 48

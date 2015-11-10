@@ -30,6 +30,7 @@ export BR2_DL_DIR=/src
 export LEGO_DOWNLOAD_DIR=/src
 export LEGO_TOOLCHAIN_BASE=/opt/gwr
 export LEGO_DONT_BUILD_TOOLCHAIN=1
+export NO_LICENSE_BUNDLE=1
 export LESS='-R'
 export TFTPDIR=/nfsroot
 export INPUTRC='~/.inputrc'
@@ -112,6 +113,9 @@ fi
 # }}}
 
 # modified commands
+
+eval "$(thefuck --alias)"
+
 alias diff='colordiff'              # requires colordiff package
 alias grep='grep --color=auto'
 alias more='less'
@@ -142,7 +146,6 @@ if [ $UID -ne 0 ]; then
     alias svim='sudo vim'
     alias root='sudo su'
     alias reboot='sudo reboot'
-    alias update='sudo pacman -Su'
     alias netcfg='sudo netcfg'
 fi
 
@@ -314,7 +317,7 @@ do_mips()
 {
     export ARCH=mips
     export CROSS_COMPILE=mips-greenwave-linux-gnu-
-    export GWRTOOLCHAIN=$LEGO_TOOLCHAIN_BASE/mips-24kc_linaro-gcc47
+    export GWRTOOLCHAIN=$LEGO_TOOLCHAIN_BASE/mips-1074k_linaro-gcc47
     _add_to_path "$GWRTOOLCHAIN/bin"
 }
 
@@ -351,51 +354,6 @@ function env() {
 
 # Todo alias
 alias t='todo.sh'
-
-# we're on ARCH
-if $_isarch; then
-
-  # we're not root
-  if ! $_isroot; then
-
-    # pacman-color is installed
-    if _have pacman-color; then
-      alias pacman='sudo pacman-color'
-
-      alias pacse='pacman-color -Ss'
-      alias pacin='sudo pacman-color -S'
-      alias pacout='sudo pacman-color -R'
-      alias pacup='sudo pacman-color -Syu'
-      alias pacorphans='sudo pacman-color -Rs $(/usr/bin/pacman -Qtdq)'
-      alias paccorrupt='sudo find /var/cache/pacman/pkg -name '\''*.part.*'\'''
-      alias pactesting='pacman-color -Q $(/usr/bin/pacman -Sql {community-,}testing) 2>/dev/null'
-
-    # pacman-color not installed
-    else
-      alias pacman='sudo pacman'
-
-      alias pacse='/usr/bin/pacman -Ss'
-      alias pacin='pacman -S'
-      alias pacout='pacman -R'
-      alias pacup='pacman -Syu'
-      alias pacorphans='pacman -Rs $(/usr/bin/pacman -Qtdq)'
-      alias paccorrupt='sudo find /var/cache/pacman/pkg -name '\''*.part.*'\'''
-      alias pactesting='/usr/bin/pacman -Q $(/usr/bin/pacman -Sql {community-,}testing) 2>/dev/null'
-    fi
-
-  # we are root
-  else
-      alias pacman &>/dev/null && unalias pacman
-
-      alias pacse='pacman -Ss'
-      alias pacin='pacman -S'
-      alias pacout='pacman -R'
-      alias pacup='pacman -Syu'
-      alias pacorphans='pacman -Rs $(pacman -Qtdq)'
-      alias paccorrupt='find /var/cache/pacman/pkg -name '\''*.part.*'\'''
-      alias pactesting='pacman -Q $(pacman -Sql {community-,}testing) 2>/dev/null'
-  fi
-fi
 
 # WELCOME SCREEN
 #######################################################

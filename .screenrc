@@ -18,7 +18,9 @@ vbell off
 #change the hardstatus settings to give an window list at the bottom of the
 #screen, with the time and date and with the current window highlighted
 hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+#hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+#hardstatus string "%{= KW} %H %{= Kw}|%{-} %-Lw%{= bW}%n%f %t%{-}%+Lw %=%C%a %m/%d"
+hardstatus alwayslastline '%{= kK} %{= G}[%{= W}%H%{= G}] %= %{= K}%-w%{= G}[%{= W}%n %t%{= G}]%{= K}%+w '
 sorendition kw
 
 defscrollback 50000

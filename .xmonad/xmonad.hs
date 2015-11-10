@@ -9,7 +9,7 @@ import XMonad hiding ( (|||) )
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
-import XMonad.Actions.CycleWS (toggleWS)
+import XMonad.Actions.CycleWS
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.OnScreen
 
@@ -139,6 +139,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     , ((modm, 		    xK_h     ), focusScreen 0)      -- focus left screen 0
     , ((modm,		    xK_l     ), focusScreen 1)      -- focus left screen 1
+    , ((modm,		    xK_y     ), swapNextScreen)     -- swap next screen
+    , ((modm .|. shiftMask, xK_y     ), shiftNextScreen)    -- move window to next screen
     , ((modm .|. shiftMask, xK_h     ), sendMessage Shrink) -- Shrink the master area
     , ((modm .|. shiftMask, xK_l     ), sendMessage Expand) -- Expand the master area
     
