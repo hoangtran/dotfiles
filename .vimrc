@@ -91,6 +91,10 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-pathogen'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'tpope/vim-jdaddy.git'
+"Bundle 'altercation/vim-colors-solarized.git'
+Bundle 'w0ng/vim-hybrid'
+Bundle 'sjl/gundo.vim'
+Bundle 'rking/ag.vim'
 
 execute pathogen#infect('pundle/{}')
 
@@ -131,11 +135,17 @@ map <space> /
 map <c-space> ?
 map <silent> <leader><cr> :noh<cr>
 
+" highlight last inserted text
+"nnoremap gV `[v`]
+
 "Smart way to move btw. windows
 "map <C-j> <C-W>j
 "map <C-k> <C-W>k
 "map <C-h> <C-W>h
 "map <C-l> <C-W>l
+
+" jk is escape
+inoremap jk <ESC>
 
 nnoremap <NL> i<cr><ESC>
 
@@ -166,6 +176,18 @@ map <leader>lcd :lcd %:p:h<cr>
 map <leader>cc :cclose<cr>
 map <leader>co :copen<cr>
 
+cnoremap sudow w !sudo tee % >/dev/null
+
+" Use r for [right-angle braces] and a for <angle braces> like vim-surround
+vnoremap ir i]
+vnoremap ar a]
+vnoremap ia i>
+vnoremap aa a>
+onoremap ir i]
+onoremap ar a]
+onoremap ia i>
+onoremap aa a>
+
 "autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | lcd %:p:h | endif
 
 "Remember the cursor's last position after exit
@@ -179,22 +201,22 @@ autocmd BufRead *
 
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
-   let l:currentBufNum = bufnr("%")
-   let l:alternateBufNum = bufnr("#")
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
 
-   if buflisted(l:alternateBufNum)
-       buffer #
-   else
-       bnext
-   endif
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
 
-   if bufnr("%") == l:currentBufNum
-       new
-   endif
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
 
-   if buflisted(l:currentBufNum)
-       execute("bdelete! ".l:currentBufNum)
-   endif
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
 endfunction
 
 "automatically leave insert mode after 'updatetime' milliseconds of inaction
@@ -206,19 +228,19 @@ au InsertLeave * let &updatetime=updaterestore
 
 "delete trailing white space on save
 func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
+    exe "normal mz"
+    %s/\s\+$//ge
+    exe "normal `z"
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufRead,BufNewFile *.txt setlocal ft=txt
 
 "replace multiple empty lines by single empty line.
 func! ReplaceMultiEmptyLines()
-  exe "normal mz"
-  %s/\s\+$//ge
-  %s/\n\{3,}/\r\r/ge
-  exe "normal `z"
+    exe "normal mz"
+    %s/\s\+$//ge
+    %s/\n\{3,}/\r\r/ge
+    exe "normal `z"
 endfunc
 
 "Specify the behavior when switching between buffers
@@ -270,9 +292,13 @@ map <leader>q :e ~/buffer<cr>
 
 set pastetoggle=<F10>
 
-"colorscheme warez
 set background=dark
-colorscheme inkpot
+"colorscheme warez
+"colorscheme inkpot
+"let g:solarized_termcolors=256
+"colorscheme solarized
+"let g:hybrid_use_Xresources = 1
+colorscheme hybrid
 
 highlight clear SignColumn
 
@@ -343,13 +369,23 @@ endfunction
 "Supertab literal
 "let g:SuperTabMappingTabLiteral='<c-v>'
 
+"Open ag.vim
+nnoremap <leader>a :Ag
+
 "Command-T stuff
 let g:CommandMaxFiles=40000
 
 "Ctrl-P stuff
 let g:ctrlp_max_files = 10000
 let g:ctrlp_max_depth = 10
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path = 0
+let g:ctrlp_user_command = ['ag %s -l --nocolor --hidden -g ""']
+"let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
+
+" toggle gundo
+nnoremap <leader>u :GundoToggle<CR>
 
 "map _u :call ID_search()<Bar>execute "/\\<" . g:word . "\\>"<CR>
 "map _n :n<Bar>execute "/\\<" . g:word . "\\>"<CR>
@@ -416,14 +452,3 @@ nmap <silent> <leader>P :call Paste(1, 1)<cr>
 nmap <silent> <leader>gp :call Paste(0, 0)<cr>
 nmap <silent> <leader>gP :call Paste(1, 0)<cr>
 
-cnoremap sudow w !sudo tee % >/dev/null
-
-" Use r for [right-angle braces] and a for <angle braces> like vim-surround
-vnoremap ir i]
-vnoremap ar a]
-vnoremap ia i>
-vnoremap aa a>
-onoremap ir i]
-onoremap ar a]
-onoremap ia i>
-onoremap aa a>
