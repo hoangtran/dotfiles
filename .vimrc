@@ -83,7 +83,6 @@ Bundle 'gmarik/vundle'
 
 Bundle 'OmniCppComplete'
 Bundle 'The-NERD-tree'
-Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'kien/ctrlp.vim'
 Bundle 'taglist.vim'
@@ -371,9 +370,6 @@ endfunction
 
 "Open ag.vim
 nnoremap <leader>a :Ag
-
-"Command-T stuff
-let g:CommandMaxFiles=40000
 
 "Ctrl-P stuff
 let g:ctrlp_max_files = 10000

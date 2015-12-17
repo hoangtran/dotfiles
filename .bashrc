@@ -23,12 +23,15 @@ set -o vi               # vi-like behavior for bash
 
 shopt -s extglob
 
+# disable flow control
+stty -ixon
+
 export BROWSER='firefox'
 export EDITOR=vim
 export BUILDROOT_DL_DIR=/src
 export BR2_DL_DIR=/src
 export LEGO_DOWNLOAD_DIR=/src
-export LEGO_TOOLCHAIN_BASE=/opt/gwr
+export LEGO_TOOLCHAIN_BASE=/ssd/toolchains
 export LEGO_DONT_BUILD_TOOLCHAIN=1
 export NO_LICENSE_BUNDLE=1
 export LESS='-R'
@@ -75,9 +78,6 @@ shopt -s histreedit
 
 _islinux=false
 [[ "$(uname -s)" =~ Linux|GNU|GNU/* ]] && _islinux=true
-
-_isarch=false
-[[ -f /etc/arch-release ]] && _isarch=true
 
 _isxrunning=false
 [[ -n "$DISPLAY" ]] && _isxrunning=true
@@ -171,13 +171,8 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 
-# ack commands
-alias ack='ack --follow'
-alias ackw='ack -w'
-alias ackl='ack -l'
-alias ackwl='ack -w -l'
-
 alias g='git'
+
 # gerrit commands
 alias gerrit='ssh gitgerrit-01 gerrit'
 
@@ -220,13 +215,6 @@ extract() {
     fi
   done
   return $e
-}
-
-# manage services 
-service() {
-  $_isarch || return 1
-  
-  sudo /etc/rc.d/$1 $2
 }
 
 # auto send an attachment from CLI 
@@ -293,7 +281,7 @@ ii()
 
 do_gwr()
 {
-    cd ~/gwr/lego/
+    cd /ssd/lego/
     source lego.env
 }
 
@@ -358,9 +346,6 @@ alias t='todo.sh'
 # WELCOME SCREEN
 #######################################################
 #
-#clear
-#archey3
-$_isarch && echo -e `cat /etc/arch-release` - "Kernel: "`uname -r`;
 #fortune -s $HOME/fortune/geek
 
 #PS1="\[\e[0;31m\]┌── \u\[\e[m\] \[\e[1;34m\]\w\[\e[m\]\n\[\e[0;31m\]└─> \[\e[0m\]"
