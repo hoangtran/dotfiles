@@ -81,15 +81,15 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 
-Bundle 'OmniCppComplete'
-Bundle 'The-NERD-tree'
+"Bundle 'OmniCppComplete'
+"Bundle 'The-NERD-tree'
 Bundle 'jlanzarotta/bufexplorer'
-Bundle 'kien/ctrlp.vim'
+Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'taglist.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-pathogen'
 Bundle 'airblade/vim-gitgutter'
-Bundle 'tpope/vim-jdaddy.git'
+"Bundle 'tpope/vim-jdaddy.git'
 "Bundle 'altercation/vim-colors-solarized.git'
 Bundle 'w0ng/vim-hybrid'
 Bundle 'sjl/gundo.vim'
@@ -332,7 +332,7 @@ endfunction
 nnoremap <silent> <F7> :NERDTreeToggle<CR>
 
 "find recursively tags
-set tags=tags;/
+set tags=./tags,./../tags,./*/tags;
 
 "scim stuff
 function! Vietnamese()
