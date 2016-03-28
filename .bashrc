@@ -6,8 +6,6 @@
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
-[[ -s /etc/profile.d/autojump.sh ]] && . /etc/profile.d/autojump.sh
-
 # is $1 installed?
 _have() { which "$1" &>/dev/null; }
 
@@ -28,10 +26,10 @@ stty -ixon
 
 export BROWSER='firefox'
 export EDITOR=vim
-export BUILDROOT_DL_DIR=/src
-export BR2_DL_DIR=/src
-export LEGO_DOWNLOAD_DIR=/src
-export LEGO_TOOLCHAIN_BASE=/ssd/toolchains
+export BUILDROOT_DL_DIR=/pkgs
+export BR2_DL_DIR=/pkgs
+export LEGO_DOWNLOAD_DIR=/pkgs
+export LEGO_TOOLCHAIN_BASE=/opt/gws
 export LEGO_DONT_BUILD_TOOLCHAIN=1
 export NO_LICENSE_BUNDLE=1
 export LESS='-R'
@@ -42,17 +40,10 @@ export T32SYS=/opt/t32
 export T32TMP=/tmp
 export T32ID=T32
 
-export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-
 # HISTORY {{{
-
-# also write command history at every prompt.
-#PROMPT_COMMAND=" history -a; ${PROMPT_COMMAND} "
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
 
 # don't put duplicate lines in the history. See bash(1) section 'HISTORY' for more options
 #export HISTCONTROL="ignoredups"
-
 # ... and ignore same sucessive entries, as well as commands starting with a space.
 export HISTCONTROL="ignoreboth"
 
@@ -71,6 +62,9 @@ shopt -s cmdhist
 
 # allow re-editing of a history command substitution, if the previous run failed
 shopt -s histreedit
+
+# auto "cd" when entering just a path
+shopt -s autocd
 
 # }}}
 
@@ -114,7 +108,7 @@ fi
 
 # modified commands
 
-eval "$(thefuck --alias)"
+#eval "$(thefuck --alias)"
 
 alias diff='colordiff'              # requires colordiff package
 alias grep='grep --color=auto'
@@ -281,7 +275,7 @@ ii()
 
 do_gwr()
 {
-    cd /ssd/lego/
+    cd ~/gws/lego/
     source lego.env
 }
 

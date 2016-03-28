@@ -12,8 +12,8 @@ Xft.hintstyle: hintfull
 ! Urxvt
 !URxvt*font:     -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 !URxvt*boldFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
-URxvt*font: xft:Monaco:pixelsize=13:antialias=true:hinting=true
-URxvt*boldFont: xft:Monaco:pixelsize=13:antialias=true:hinting=true
+URxvt*font: xft:inconsolata:pixelsize=16:antialias=true:hinting=true
+URxvt*boldFont: xft:inconsolata-bold:pixelsize=16:antialias=true:hinting=true
 
 URxvt*scrollBar:  false
 URxvt*jumpScroll: true
@@ -62,7 +62,7 @@ xterm*Geometry:   100x60
 !xterm*background: #303030
 !xterm*font:       -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 !xterm*boldFont:   -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
-xterm*faceName:   Monaco:pixelsize=13:antialias=true
+xterm*faceName:   inconsolata:pixelsize=16:antialias=true
 xterm*scrollBar:  false
 xterm*termName:   xterm-256color
 xterm*background: rgba:0000/0000/0000/dddd
@@ -79,4 +79,4 @@ Xmessage*Buttons:               Quit
 Xmessage*defaultButton:         Quit
 
 Xcursor.theme: gentoo
-!Xcursor.size: 48
+Xcursor.size: 32
