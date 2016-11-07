@@ -13,6 +13,7 @@ _have() { which "$1" &>/dev/null; }
 
 source /usr/share/git/git-prompt.sh
 source /usr/share/bash-completion/completions/git
+source /usr/share/autojump/autojump.bash
 
 set -o notify           # Tell me when bg proccess finish
 set -o noclobber        # Warn of over write on redirects
@@ -26,9 +27,9 @@ stty -ixon
 
 export BROWSER='firefox'
 export EDITOR=vim
-export BUILDROOT_DL_DIR=/pkgs
-export BR2_DL_DIR=/pkgs
-export LEGO_DOWNLOAD_DIR=/pkgs
+export BUILDROOT_DL_DIR=/hq/pkgs
+export BR2_DL_DIR=/hq/pkgs
+export LEGO_DOWNLOAD_DIR=/hq/pkgs
 export LEGO_TOOLCHAIN_BASE=/opt/gws
 export LEGO_DONT_BUILD_TOOLCHAIN=1
 export NO_LICENSE_BUNDLE=1
@@ -182,6 +183,22 @@ if [[ -d "$SCREEN_CONF_DIR" ]]; then
 
   _have irssi && alias irssi='SCREEN_CONF=irssi screen -S irssi -R -D irssi'
 fi
+
+# equery
+alias eqf='equery f'
+alias equ='equery u'
+alias eqh='equery h'
+alias eqa='equery a'
+alias eqb='equery b'
+alias eql='equery l'
+alias eqd='equery d'
+alias eqg='equery g'
+alias eqc='equery c'
+alias eqk='equery k'
+alias eqm='equery m'
+alias eqy='equery y'
+alias eqs='equery s'
+alias eqw='equery w'
 
 ### Bash functions {{{
 

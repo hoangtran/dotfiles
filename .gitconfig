@@ -22,14 +22,9 @@
 	unstage = reset HEAD --
 	fl = log -u
 	filelog = log -u
-	pfr = push origin HEAD:refs/for/master
 	lp = log -p --cc --decorate=short
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
-[merge]
-	tool = meld
-[diff]
-	tool = meld
 [branch]
 	autosetuprebase = always
 [credential]
@@ -45,3 +40,5 @@
 	excludesfile = /home/hoangtran/.global_ignore
 [init]
 	templatedir = ~/.git_template
+[help]
+	autocorrect = 8

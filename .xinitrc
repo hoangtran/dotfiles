@@ -11,10 +11,10 @@ xcompmgr -fF &                              # allow transparency
 xrdb $HOME/.Xresources &                    # load Xresources
 #xset fp+ /usr/share/fonts/local &           # add local fonts
 xset s 1200 1200 &                          # set monitor to sleep 20 mins
-xsetroot -cursor_name left_ptr              # req'd for xmonad's cursor
-(sleep 3 && xmodmap $HOME/.Xmodmap) &       # remove capslock
+#xsetroot -cursor_name left_ptr              # req'd for xmonad's cursor
+#(sleep 3 && xmodmap $HOME/.Xmodmap) &       # remove capslock
 unclutter &				    # hide mouse cursors
 #uim-xim &
-xcape -e 'Control_L=Escape' &		    # press then release will send esc.
+#xcape -e 'Control_L=Escape' &		    # press then release will send esc.
 
-xmonad		                            # start xmonad
+exec dwm

@@ -78,7 +78,7 @@ unignore from: to: cc: date: subject:
 hdr_order from: to: cc: date: subject:
 
 # conditionally source sidebar options 
-source `FILE=$HOME/.mutt/sidebar; mutt -v | grep -Fq sidebar || FILE=/dev/null; echo $FILE`
+#source `FILE=$HOME/.mutt/sidebar; mutt -v | grep -Fq sidebar || FILE=/dev/null; echo $FILE`
 
 source ~/.mutt/colors
 source ~/.mutt/mailboxes

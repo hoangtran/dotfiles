@@ -2,7 +2,7 @@
 "
 " Author     : Hoang Tran <hoangnart at gmail dot com>
 " Version    : 1.4
-" Last Change: Fri Dec 13 13:48:39 SGT 2013  
+" Last Change: Fri Dec 13 13:48:39 SGT 2013
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -39,10 +39,6 @@ set ruler
 set wildmenu           "Turn on wild menu
 set wildcharm=<C-Z>    "Shortcut to open the wildmenu when you are in the command mode - it's similar to <C-D>
 
-set laststatus=2       "statusline is always visible
-"Format the statusline
-set statusline=\ (%{bufnr('%')})%f%m%r%h\ %w\ #%{expand('#:t')}\ (%{bufnr('#')})%=CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
-
 set linebreak          "If on Vim will wrap long lines at a character in 'breakat'
 set showbreak=>>\      "identifier put in front of wrapped lines
 set lazyredraw         "no readraw when running macros
@@ -76,26 +72,31 @@ set smartcase
 
 syntax enable
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
-"Bundle 'OmniCppComplete'
-"Bundle 'The-NERD-tree'
-Bundle 'jlanzarotta/bufexplorer'
-Bundle 'ctrlpvim/ctrlp.vim'
-Bundle 'taglist.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-pathogen'
-Bundle 'airblade/vim-gitgutter'
-"Bundle 'tpope/vim-jdaddy.git'
-"Bundle 'altercation/vim-colors-solarized.git'
-Bundle 'w0ng/vim-hybrid'
-Bundle 'sjl/gundo.vim'
-Bundle 'rking/ag.vim'
+"Plugin 'OmniCppComplete'
+"Plugin 'The-NERD-tree'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'ctrlpvim/ctrlp.vim'
+"Plugin 'taglist.vim'
+Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-pathogen'
+Plugin 'airblade/vim-gitgutter'
+"Plugin 'tpope/vim-jdaddy.git'
+"Plugin 'altercation/vim-colors-solarized.git'
+"Plugin 'jpo/vim-railscasts-theme'
+Plugin 'w0ng/vim-hybrid'
+"Plugin 'sjl/gundo.vim'
+Plugin 'rking/ag.vim'
+Plugin 'will133/vim-dirdiff'
+Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline-themes'
+"Plugin 'scrooloose/syntastic'
 
-execute pathogen#infect('pundle/{}')
+call vundle#end()
 
 "Enable filetype plugin
 filetype plugin indent on
@@ -103,6 +104,10 @@ filetype plugin indent on
 set ai         "Auto indent
 set si         "Smart indent
 set cindent    "C-style indent
+
+"set laststatus=2       "statusline is always visible
+"Format the statusline
+"set statusline=\ (%{bufnr('%')})%f%m%r%h\ %w\ #%{expand('#:t')}\ (%{bufnr('#')})%=CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
 "Linux kernel coding style
 set noexpandtab
@@ -116,6 +121,7 @@ set cinoptions=:0,l1,t0,g0
 
 "set selectmode=mouse,key,cmd
 
+set listchars=tab:\|\ ,trail:~,extends:>,precedes:<
 "Remap VIM 0
 map 0 ^
 
@@ -296,7 +302,8 @@ set background=dark
 "colorscheme inkpot
 "let g:solarized_termcolors=256
 "colorscheme solarized
-"let g:hybrid_use_Xresources = 1
+let g:hybrid_custom_term_colors = 1
+let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
 colorscheme hybrid
 
 highlight clear SignColumn
@@ -305,6 +312,16 @@ highlight clear SignColumn
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
 "let g:bufExplorerSortBy = "name"
+
+" Always show the airline bar
+set laststatus=2
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#whitespace#checks = [ 'trailing' ]
+let g:airline_powerline_fonts = 1
+let g:airline_symbols.maxlinenr = 'Ξ'
 
 au BufNewFile,BufRead ~/.mutt/temp/* setlocal ft=mail
 
@@ -383,6 +400,16 @@ let g:ctrlp_user_command = ['ag %s -l --nocolor --hidden -g ""']
 " toggle gundo
 nnoremap <leader>u :GundoToggle<CR>
 
+"Syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
 "map _u :call ID_search()<Bar>execute "/\\<" . g:word . "\\>"<CR>
 "map _n :n<Bar>execute "/\\<" . g:word . "\\>"<CR>
 "
@@ -396,9 +423,9 @@ nnoremap <leader>u :GundoToggle<CR>
 function! s:Shell(...)
     let curline=line ('.')
     if curline < 6
-	let start=0
+        let start=0
     else
-	let start=curline-5
+        let start=curline-5
     endif
     let end=curline+15
     execute 'silent !clear'
@@ -447,4 +474,12 @@ nmap <silent> <leader>p :call Paste(0, 1)<cr>
 nmap <silent> <leader>P :call Paste(1, 1)<cr>
 nmap <silent> <leader>gp :call Paste(0, 0)<cr>
 nmap <silent> <leader>gP :call Paste(1, 0)<cr>
+
+"highlight DiffAdd cterm=none ctermfg=fg ctermbg=Blue gui=none guifg=fg guibg=Blue
+"highlight DiffDelete cterm=none ctermfg=fg ctermbg=Blue gui=none guifg=fg guibg=Blue
+"highlight DiffChange cterm=none ctermfg=fg ctermbg=Blue gui=none guifg=fg guibg=Blue
+"highlight DiffText cterm=none ctermfg=bg ctermbg=White gui=none guifg=bg guibg=White
+
+"dirdiff
+let g:DirDiffExcludes = "*.d,*.o,*.cmd,*.orig,*.mod,.*.swp"
 
