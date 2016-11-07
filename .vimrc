@@ -70,6 +70,10 @@ set incsearch
 set ignorecase
 set smartcase
 
+"timeout
+set timeoutlen=1000
+set ttimeoutlen=0
+
 syntax enable
 
 set rtp+=~/.vim/bundle/Vundle.vim
