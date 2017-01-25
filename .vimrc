@@ -1,8 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" Author     : Hoang Tran <hoangnart at gmail dot com>
+" Author     : Hoang Tran
 " Version    : 1.4
-" Last Change: Fri Dec 13 13:48:39 SGT 2013
+" Last Change: Wed Jan 25 12:19:36 PST 2017
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
