@@ -393,13 +393,12 @@ endfunction
 nnoremap <leader>a :Ag
 
 "Ctrl-P stuff
-let g:ctrlp_max_files = 10000
+let g:ctrlp_max_files = 20000
 let g:ctrlp_max_depth = 10
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path = 0
-let g:ctrlp_user_command = ['ag %s -l --nocolor --hidden -g ""']
-"let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files', 'ag %s -l --nocolor --hidden -g ""']
 
 " toggle gundo
 nnoremap <leader>u :GundoToggle<CR>
