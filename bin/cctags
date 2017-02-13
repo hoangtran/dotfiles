@@ -6,6 +6,6 @@ dir="`git rev-parse --git-dir`"
 
 trap 'rm -f "$dir/$$.tags"' EXIT
 git ls-files | \
-  ctags --tag-relative -L - -f"$dir/$$.tags" --languages="Asm,C,C++"
+  ctags --tag-relative -L - -f"$dir/$$.tags" --languages="Asm,C,C++" --links=no
 mv "$dir/$$.tags" "$dir/tags"
 
