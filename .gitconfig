@@ -24,7 +24,7 @@
 	filelog = log -u
 	lp = log -p --cc --decorate=short
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
-	ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
+	ctags = "!f() { git_common_dir=`git rev-parse --git-common-dir`; [ -f $git_common_dir/hooks/ctags ] || git init; $git_common_dir/hooks/ctags; }; f"
 [branch]
 	autosetuprebase = always
 [credential]
