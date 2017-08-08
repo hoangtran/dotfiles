@@ -8,12 +8,13 @@ Xft.antialias: true
 Xft.hinting:   true
 Xft.rgba:      rgb
 Xft.hintstyle: hintfull
+Xft.lcdfilter: infinality
 
 ! Urxvt
 !URxvt*font:     -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 !URxvt*boldFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 URxvt*font: xft:inconsolata:pixelsize=16:antialias=true:hinting=true
-URxvt*boldFont: xft:inconsolata-bold:pixelsize=16:antialias=true:hinting=true
+URxvt*boldFont: xft:inconsolata:pixelsize=16:antialias=true:hinting=true
 
 URxvt*scrollBar:  false
 URxvt*jumpScroll: true
@@ -60,13 +61,15 @@ URxvt.keysym.M-C-v:	perl:clipboard:paste_escaped
 xterm*Geometry:   100x60
 !xterm*foreground: #909090
 !xterm*background: #303030
+!xterm*background: rgba:0000/0000/0000/dddd
+!xterm*foreground: #dcdccc
+xterm*background: #222222
+xterm*foreground: #dcdccc
 !xterm*font:       -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 !xterm*boldFont:   -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
-xterm*faceName:   inconsolata:pixelsize=16:antialias=true
+xterm*faceName:   xft:fantasquesansmono:pixelsize=16:antialias=true
 xterm*scrollBar:  false
 xterm*termName:   xterm-256color
-xterm*background: rgba:0000/0000/0000/dddd
-xterm*foreground: #dcdccc
 
 ! Xmessage
 Xmessage*font:                  -xos4-terminus-*-*-*-*-*-*-*-*-*-*-iso8859-2

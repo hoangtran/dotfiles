@@ -27,7 +27,7 @@ sorendition kw
 defscrollback 50000
 
 # Banish screen 0, it sucks
-bind c screen 1 
+bind c screen 1
 bind ^c screen 1
 bind 0 select 10
 
@@ -47,7 +47,7 @@ bind } history
 
 # Banish stupid s default behavior, make it more useful
 # find the nearest shell
-bind s select bash 
+bind s select bash
 #bind s split -v
 #bind s
 

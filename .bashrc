@@ -118,7 +118,8 @@ alias m='more'
 alias df='df -h'
 alias du='du -c -h'
 alias mkdir='mkdir -p -v'
-alias ping='ping -c 5'
+alias mkidr=mkdir
+#alias ping='ping -c 5'
 
 alias vi='vim'
 alias emacs='emacs -nw'
@@ -308,7 +309,7 @@ do_arm()
 {
     export ARCH=arm
     export CROSS_COMPILE=arm-greenwave-linux-gnueabihf-
-    export GWRTOOLCHAIN=$LEGO_TOOLCHAIN_BASE/arm-cortex-a9_linaro-gcc47
+    export GWRTOOLCHAIN=$LEGO_TOOLCHAIN_BASE/arm-cortex-a9_linaro-gcc49
     _add_to_path "$GWRTOOLCHAIN/bin" $HOME/src/buildroot/output/host/usr/bin
 }
 
@@ -320,6 +321,12 @@ do_mips()
     _add_to_path "$GWRTOOLCHAIN/bin"
 }
 
+do_arc()
+{
+    export ARCH=arc
+    export CROSS_COMPILE=arc-linux-uclibc-
+    _add_to_path "/usr/local/ARC/gcc/bin"
+}
 
 # }}}
 

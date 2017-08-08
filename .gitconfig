@@ -42,3 +42,7 @@
 	templatedir = ~/.git_template
 [help]
 	autocorrect = 8
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
+[merge]
+	tool = fugitive
