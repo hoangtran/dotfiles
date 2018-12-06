@@ -13,7 +13,8 @@ _have() { which "$1" &>/dev/null; }
 
 source /usr/share/git/git-prompt.sh
 source /usr/share/bash-completion/completions/git
-source /usr/share/autojump/autojump.bash
+#source /usr/share/autojump/autojump.bash
+source ~/bin/z.sh
 
 set -o notify           # Tell me when bg proccess finish
 set -o noclobber        # Warn of over write on redirects
@@ -94,7 +95,7 @@ _add_to_path() {
 ### Bash exports {{{
 
 # set path
-_add_to_path "$HOME/bin" "$HOME/oald8" "$T32SYS/bin/pc_linux64"
+_add_to_path "$HOME/bin" "$HOME/oald8" "$T32SYS/bin/pc_linux64" "$HOME/.local/bin"
 
 # custom log directory
 [[ -d "$HOME/.logs" ]] && export LOGS="$HOME/.logs" || export LOGS='/tmp'
