@@ -3,6 +3,8 @@
 #include "/home/hoangtran/.xcolors/hybrid"
 !#include "/home/hoangtran/.xcolors/solarized"
 
+Xft.dpi: 192
+
 ! Fonts
 Xft.antialias: true
 Xft.hinting:   true
@@ -13,8 +15,8 @@ Xft.lcdfilter: infinality
 ! Urxvt
 !URxvt*font:     -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 !URxvt*boldFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
-URxvt*font: xft:inconsolata:pixelsize=16:antialias=true:hinting=true
-URxvt*boldFont: xft:inconsolata:pixelsize=16:antialias=true:hinting=true
+URxvt*font: xft:inconsolata:pixelsize=24:antialias=true:hinting=true
+URxvt*boldFont: xft:inconsolata:pixelsize=24:antialias=true:hinting=true
 
 URxvt*scrollBar:  false
 URxvt*jumpScroll: true
@@ -67,7 +69,7 @@ xterm*background: #222222
 xterm*foreground: #dcdccc
 !xterm*font:       -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 !xterm*boldFont:   -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
-xterm*faceName:   xft:fantasquesansmono:pixelsize=16:antialias=true
+xterm*faceName:   xft:fantasquesansmono:pixelsize=24:antialias=true
 xterm*scrollBar:  false
 xterm*termName:   xterm-256color
 
