@@ -88,6 +88,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 "Plugin 'taglist.vim'
 Plugin 'tpope/vim-fugitive'
 "Plugin 'tpope/vim-pathogen'
+"Plugin 'tpope/vim-surround'
 Plugin 'airblade/vim-gitgutter'
 "Plugin 'tpope/vim-jdaddy.git'
 "Plugin 'altercation/vim-colors-solarized.git'
@@ -97,8 +98,10 @@ Plugin 'w0ng/vim-hybrid'
 Plugin 'rking/ag.vim'
 Plugin 'will133/vim-dirdiff'
 Plugin 'vim-airline/vim-airline'
+Plugin 'tmux-plugins/vim-tmux'
 "Plugin 'vim-airline/vim-airline-themes'
 "Plugin 'scrooloose/syntastic'
+Plugin 'rhysd/vim-clang-format'
 
 call vundle#end()
 
@@ -486,3 +489,18 @@ nmap <silent> <leader>gP :call Paste(1, 0)<cr>
 "dirdiff
 let g:DirDiffExcludes = "*.d,*.o,*.cmd,*.orig,*.mod,.*.swp"
 
+let g:clang_format#style_options = {
+            \ "AccessModifierOffset" : -4,
+            \ "AllowShortIfStatementsOnASingleLine" : "true",
+            \ "AlwaysBreakTemplateDeclarations" : "true",
+            \ "Standard" : "C++11"}
+
+" map to <Leader>cf in C++ code
+"autocmd FileType cpp,objc nnoremap <buffer><leader>cf :<C-u>ClangFormat<CR>
+"autocmd FileType cpp,objc vnoremap <buffer><leader>cf :ClangFormat<CR>
+" if you install vim-operator-user
+"autocmd FileType cpp,objc map <buffer><leader>x <Plug>(operator-clang-format)
+" Toggle auto formatting:
+"nmap <leader>C :ClangFormatAutoToggle<CR>
+
+"autocmd FileType cpp ClangFormatAutoEnable
