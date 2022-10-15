@@ -11,8 +11,15 @@ _have() { which "$1" &>/dev/null; }
 
 [[ -f $HOME/.dircolors ]] && eval $(/bin/dircolors -b $HOME/.dircolors)
 
-source /usr/share/git/git-prompt.sh
-source /usr/share/bash-completion/completions/git
+source /etc/os-release
+
+if [ "$ID" = "ubuntu" ]; then
+	source /usr/lib/git-core/git-sh-prompt
+	source /etc/bash_completion.d/git-prompt
+else
+	source /usr/share/git/git-prompt.sh
+	source /usr/share/bash-completion/completions/git
+fi
 #source /usr/share/autojump/autojump.bash
 source ~/bin/z.sh
 
@@ -123,6 +130,7 @@ alias mkidr=mkdir
 #alias ping='ping -c 5'
 
 alias vi='vim'
+alias vivi='vi'
 alias emacs='emacs -nw'
 
 # new commands
@@ -379,3 +387,9 @@ if [[ $(tty) = /dev/tty1 ]] && ! $_isroot && ! $_isxrunning; then
 fi
 
 # }}}
+
+alias icmakepp='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake icmake'
+alias cmakepp='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake'
+alias pkg='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake cmakepp_project_cli'
+alias cml='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake cmakelists_cli'
+export CMAKEPP_PATH=/home/hoangtran/src/bingo/cmakepp/cmakepp.cmake
