@@ -2,8 +2,7 @@
 
 set -e
 
-trap 'rm -f "$$.tags"' EXIT
-git ls-files | \
-  ctags --tag-relative=yes -L - -f"$$.tags" --languages="Asm,C,C++"
-mv "$$.tags" "tags"
-
+dir="`git rev-parse --git-dir`"
+trap 'rm -f "$dir/tags.$$"' EXIT INT TERM
+git ls-files | ctags --tag-relative=yes -L - -f$dir/tags.$$ --languages="Asm,C,C++"
+mv $dir/tags.$$ $dir/tags
