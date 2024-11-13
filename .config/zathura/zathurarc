@@ -1,8 +1,9 @@
+
 # ~/.config/zathura/zathurarc
 #
 
 set adjust-open bestfit
-set show-scrollbars false
+#set show-scrollbars false
 set page-padding 5
 set pages-per-row 1
 set window-title-basename true
