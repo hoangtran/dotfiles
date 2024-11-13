@@ -76,34 +76,33 @@ set ttimeoutlen=0
 
 syntax enable
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-Plugin 'VundleVim/Vundle.vim'
+"Plug 'OmniCppComplete'
+"Plug 'The-NERD-tree'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'taglist.vim'
+Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-pathogen'
+"Plug 'tpope/vim-surround'
+Plug 'airblade/vim-gitgutter'
+"Plug 'tpope/vim-jdaddy.git'
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+"Plug 'jpo/vim-railscasts-theme'
+"Plug 'sjl/gundo.vim'
+Plug 'rking/ag.vim'
+Plug 'jremmen/vim-ripgrep'
+Plug 'will133/vim-dirdiff'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tmux-plugins/vim-tmux'
+"Plug 'scrooloose/syntastic'
+Plug 'rhysd/vim-clang-format'
+Plug 'lervag/vimtex'
 
-"Plugin 'OmniCppComplete'
-"Plugin 'The-NERD-tree'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'ctrlpvim/ctrlp.vim'
-"Plugin 'taglist.vim'
-Plugin 'tpope/vim-fugitive'
-"Plugin 'tpope/vim-pathogen'
-"Plugin 'tpope/vim-surround'
-Plugin 'airblade/vim-gitgutter'
-"Plugin 'tpope/vim-jdaddy.git'
-"Plugin 'altercation/vim-colors-solarized.git'
-"Plugin 'jpo/vim-railscasts-theme'
-Plugin 'w0ng/vim-hybrid'
-"Plugin 'sjl/gundo.vim'
-Plugin 'rking/ag.vim'
-Plugin 'will133/vim-dirdiff'
-Plugin 'vim-airline/vim-airline'
-Plugin 'tmux-plugins/vim-tmux'
-"Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'scrooloose/syntastic'
-Plugin 'rhysd/vim-clang-format'
-
-call vundle#end()
+call plug#end()
 
 "Enable filetype plugin
 filetype plugin indent on
@@ -305,13 +304,14 @@ map <leader>q :e ~/buffer<cr>
 set pastetoggle=<F10>
 
 set background=dark
-"colorscheme warez
-"colorscheme inkpot
 "let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
 "colorscheme solarized
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
-colorscheme hybrid
+let g:airline_powerline_fonts=1
+let g:gruvbox_contrast_dark='dark'
+let g:gruvbox_transparent_bg=1
+let g:gruvbox_termcolors=256
+colorscheme gruvbox
 
 highlight clear SignColumn
 
@@ -356,7 +356,7 @@ endfunction
 nnoremap <silent> <F7> :NERDTreeToggle<CR>
 
 "find recursively tags
-set tags=./tags,./../tags,./*/tags;
+set tags=./tags,./../tags,./*/tags,./.git/tags;
 
 "scim stuff
 function! Vietnamese()
@@ -485,6 +485,7 @@ nmap <silent> <leader>gP :call Paste(1, 0)<cr>
 "highlight DiffDelete cterm=none ctermfg=fg ctermbg=Blue gui=none guifg=fg guibg=Blue
 "highlight DiffChange cterm=none ctermfg=fg ctermbg=Blue gui=none guifg=fg guibg=Blue
 "highlight DiffText cterm=none ctermfg=bg ctermbg=White gui=none guifg=bg guibg=White
+highlight Comment cterm=italic
 
 "dirdiff
 let g:DirDiffExcludes = "*.d,*.o,*.cmd,*.orig,*.mod,.*.swp"
@@ -504,3 +505,10 @@ let g:clang_format#style_options = {
 "nmap <leader>C :ClangFormatAutoToggle<CR>
 
 "autocmd FileType cpp ClangFormatAutoEnable
+
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
+
