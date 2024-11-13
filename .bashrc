@@ -11,6 +11,8 @@ _have() { which "$1" &>/dev/null; }
 
 [[ -f $HOME/.dircolors ]] && eval $(/bin/dircolors -b $HOME/.dircolors)
 
+[[ -f /usr/bin/fasd ]] && eval "$(fasd --init auto)"
+
 source /etc/os-release
 
 if [ "$ID" = "ubuntu" ]; then
@@ -20,8 +22,10 @@ else
 	source /usr/share/git/git-prompt.sh
 	source /usr/share/bash-completion/completions/git
 fi
+
 #source /usr/share/autojump/autojump.bash
 source ~/bin/z.sh
+source ~/.vim/bundle/gruvbox/gruvbox_256palette.sh
 
 set -o notify           # Tell me when bg proccess finish
 set -o noclobber        # Warn of over write on redirects
@@ -35,6 +39,7 @@ stty -ixon
 
 export BROWSER='firefox'
 export EDITOR=vim
+export TERMINAL=urxvtc
 export BUILDROOT_DL_DIR=/hq/pkgs
 export BR2_DL_DIR=/hq/pkgs
 export LEGO_DOWNLOAD_DIR=/hq/pkgs
@@ -103,6 +108,7 @@ _add_to_path() {
 
 # set path
 _add_to_path "$HOME/bin" "$HOME/oald8" "$T32SYS/bin/pc_linux64" "$HOME/.local/bin"
+_add_to_path "$HOME/.cargo/bin"
 
 # custom log directory
 [[ -d "$HOME/.logs" ]] && export LOGS="$HOME/.logs" || export LOGS='/tmp'
@@ -218,7 +224,7 @@ extract() {
     if [[ -r $i ]]; then
         c=''
         case $i in
-          *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))))
+          *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lz|lzma|xz)))))
                  c='bsdtar xvf' ;;
           *.7z)  c='7z x'       ;;
           *.Z)   c='uncompress' ;;
@@ -388,8 +394,11 @@ fi
 
 # }}}
 
+alias start-apue='VBoxManage startvm "apue" --type headless'
 alias icmakepp='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake icmake'
 alias cmakepp='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake'
 alias pkg='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake cmakepp_project_cli'
 alias cml='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake cmakelists_cli'
 export CMAKEPP_PATH=/home/hoangtran/src/bingo/cmakepp/cmakepp.cmake
+. "$HOME/.cargo/env"
+
