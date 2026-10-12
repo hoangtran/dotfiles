@@ -6,7 +6,7 @@
 
 message() { echo 'usage: sshot [ -n <name> ] [ -f ] [ scrot options ]'; exit 1; }
 
-shots_dir='~/pictures/screenshots'
+shots_dir='~/photo'
 name="desktop_$(date +%y%m%d%H%M)"
 
 # grab some options for us, pass anything

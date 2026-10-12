@@ -17,4 +17,11 @@ unclutter &				    # hide mouse cursors
 #uim-xim &
 xcape -e 'Control_L=Escape' &		    # press then release will send esc.
 
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+	for f in "/etc/X11/xinit/xinitrc.d"/?*.sh ; do
+		[ -x "$f" ] && . "$f"
+	done
+	unset f
+fi
+
 exec i3

@@ -29,7 +29,7 @@ URxvt*depth:       32
 URxvt*buffered:    true
 !URxvt*foreground:  #dcdccc
 !URxvt*background:  #222222
-URxvt*transparent: true
+!URxvt*transparent: true
 !URxvt*fading:      2%
 !URxvt*fadeColor:   grey
 !URxvt*shading:     20

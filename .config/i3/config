@@ -194,6 +194,9 @@ bindsym $mod+Shift+plus move scratchpad
 # Show the first scratchpad window
 bindsym $mod+plus scratchpad show
 
+bindsym --release Print exec --no-startup-id i3-scrot
+bindsym --release Shift+Print exec --no-startup-id i3-scrot -s
+
 #Theme
 
 # set primary gruvbox colorscheme colors
@@ -213,7 +216,7 @@ bar {
 	position top
 #       status_command i3status
 	status_command i3status-rs /home/hoangtran/.config/i3status-rust/config.toml
-	font pango:Fira San, FontAwesome 9
+	font pango:Fira Sans, FontAwesome 9
 	workspace_buttons yes
 	colors {
 		# bar background color

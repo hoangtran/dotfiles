@@ -1,8 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Author     : Hoang Tran
-" Version    : 1.4
-" Last Change: Wed Jan 25 12:19:36 PST 2017
+" Version    : 1.5
+" Last Change: Mon Oct 12 2026
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -24,13 +24,16 @@ let g:mapleader = ","
 nnoremap ; :
 
 "Fast saving
-nmap <leader>w :w!<cr>
+nnoremap <leader>w :w!<cr>
 
 "Fast editing of the .vimrc
-map <leader>e :e! ~/.vimrc<cr>
+nnoremap <leader>e :edit ~/.vimrc<cr>
 
 "When vimrc is edited, reload it
-autocmd! bufwritepost .vimrc source ~/.vimrc
+augroup vimrc_reload
+    autocmd!
+    autocmd BufWritePost .vimrc source ~/.vimrc
+augroup END
 
 set showmode           "What is the mode?
 set showcmd            "Show command
@@ -44,11 +47,6 @@ set showbreak=>>\      "identifier put in front of wrapped lines
 set lazyredraw         "no readraw when running macros
 
 "set mouse=n            "mouse only in normal mode support in vim
-
-function! CurDir()
-    let curdir = substitute(getcwd(), '/home/hoangtran/', "~/", "g")
-    return curdir
-endfunction
 
 "Turn backup off
 set nobackup
@@ -82,23 +80,14 @@ call plug#begin('~/.vim/plugged')
 "Plug 'The-NERD-tree'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'ctrlpvim/ctrlp.vim'
-"Plug 'taglist.vim'
 Plug 'tpope/vim-fugitive'
-"Plug 'tpope/vim-pathogen'
-"Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
-"Plug 'tpope/vim-jdaddy.git'
-Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
-"Plug 'jpo/vim-railscasts-theme'
-"Plug 'sjl/gundo.vim'
-Plug 'rking/ag.vim'
 Plug 'jremmen/vim-ripgrep'
 Plug 'will133/vim-dirdiff'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tmux-plugins/vim-tmux'
-"Plug 'scrooloose/syntastic'
 Plug 'rhysd/vim-clang-format'
 Plug 'lervag/vimtex'
 
@@ -110,10 +99,6 @@ filetype plugin indent on
 set ai         "Auto indent
 set si         "Smart indent
 set cindent    "C-style indent
-
-"set laststatus=2       "statusline is always visible
-"Format the statusline
-"set statusline=\ (%{bufnr('%')})%f%m%r%h\ %w\ #%{expand('#:t')}\ (%{bufnr('#')})%=CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
 "Linux kernel coding style
 set noexpandtab
@@ -129,22 +114,22 @@ set cinoptions=:0,l1,t0,g0
 
 set listchars=tab:\|\ ,trail:~,extends:>,precedes:<
 "Remap VIM 0
-map 0 ^
+nnoremap 0 ^
 
 "make Y effect to end of line instead of whole line
-map Y y$
+nnoremap Y y$
 
 "Moving by visible lines
-map <Up> gk
-map <Down> gj
+nnoremap <Up> gk
+nnoremap <Down> gj
 
-map Q gq       "Never Ex mode
-noremap gQ Q   "If you want Ex mode again
+nnoremap Q gq       "Never Ex mode
+nnoremap gQ Q   "If you want Ex mode again
 
 "Map space to / (search) and c-space to ? (backwards search)
-map <space> /
-map <c-space> ?
-map <silent> <leader><cr> :noh<cr>
+nnoremap <space> /
+nnoremap <c-space> ?
+nnoremap <silent> <leader><cr> :noh<cr>
 
 " highlight last inserted text
 "nnoremap gV `[v`]
@@ -161,31 +146,31 @@ inoremap jk <ESC>
 nnoremap <NL> i<cr><ESC>
 
 "Close the current buffer
-map <leader>bd :Bclose<cr>
+nnoremap <leader>bd :Bclose<cr>
 
 "Close all the buffers
-map <leader>ba :1,300 bd!<cr>
+nnoremap <leader>ba :1,300 bd<cr>
 
-map <leader>bn :bn<cr>
-map <leader>bp :bp<cr>
+nnoremap <leader>bn :bn<cr>
+nnoremap <leader>bp :bp<cr>
 
 "Use the arrows to something usefull
-map <right> :bn<cr>
-map <left> :bp<cr>
+nnoremap <right> :bn<cr>
+nnoremap <left> :bp<cr>
 
 "Tab configuration
-map <leader>tn :tabnew %<cr>
-map <leader>te :tabedit
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
+nnoremap <leader>tn :tabnew %<cr>
+nnoremap <leader>te :tabedit
+nnoremap <leader>tc :tabclose<cr>
+nnoremap <leader>tm :tabmove
 
 "When pressing <leader>cd switch to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>
-map <leader>lcd :lcd %:p:h<cr>
+nnoremap <leader>cd :cd %:p:h<cr>
+nnoremap <leader>lcd :lcd %:p:h<cr>
 
 "Close and open quickfix quick
-map <leader>cc :cclose<cr>
-map <leader>co :copen<cr>
+nnoremap <leader>cc :cclose<cr>
+nnoremap <leader>co :copen<cr>
 
 cnoremap sudow w !sudo tee % >/dev/null
 
@@ -202,13 +187,19 @@ onoremap aa a>
 "autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | lcd %:p:h | endif
 
 "Remember the cursor's last position after exit
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+augroup vimrc_cursor_restore
+    autocmd!
+    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+augroup END
 
 "always add the current file's directory to the path if not already there
-autocmd BufRead *
-      \ let s:tempPath=escape(escape(expand("%:p:h"), ' '), '\ ') |
-      \ exec "set path-=".s:tempPath |
-      \ exec "set path+=".s:tempPath
+augroup vimrc_buffer_path
+    autocmd!
+    autocmd BufRead *
+            \ let s:tempPath=escape(escape(expand("%:p:h"), ' '), '\ ') |
+            \ exec "set path-=".s:tempPath |
+            \ exec "set path+=".s:tempPath
+augroup END
 
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
@@ -226,16 +217,19 @@ function! <SID>BufcloseCloseIt()
     endif
 
     if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
+        execute("bdelete ".l:currentBufNum)
     endif
 endfunction
 
 "automatically leave insert mode after 'updatetime' milliseconds of inaction
-au CursorHoldI * stopinsert
+augroup vimrc_insert_idle
+    autocmd!
+    autocmd CursorHoldI * stopinsert
 
 "set 'updatetime' to 15 seconds when in insert mode
-au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
-au InsertLeave * let &updatetime=updaterestore
+    autocmd InsertEnter * let updaterestore=&updatetime | set updatetime=15000
+    autocmd InsertLeave * let &updatetime=updaterestore
+augroup END
 
 "delete trailing white space on save
 func! DeleteTrailingWS()
@@ -243,8 +237,11 @@ func! DeleteTrailingWS()
     %s/\s\+$//ge
     exe "normal `z"
 endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufRead,BufNewFile *.txt setlocal ft=txt
+augroup vimrc_file_cleanup
+    autocmd!
+    autocmd BufWrite *.py call DeleteTrailingWS()
+    autocmd BufRead,BufNewFile *.txt setlocal ft=txt
+augroup END
 
 "replace multiple empty lines by single empty line.
 func! ReplaceMultiEmptyLines()
@@ -270,7 +267,7 @@ vnoremap ,u :s/\<\@!\([A-Z]\)/\_\l\1/g<CR>gul
 
 "When you press gv you vimgrep after the selected text
 vnoremap <silent> gv :call VisualSearch('gv')<CR>
-map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+nnoremap <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
 
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
@@ -299,14 +296,11 @@ function! VisualSearch(direction) range
 endfunction
 
 "Quickly open a buffer for scripbble
-map <leader>q :e ~/buffer<cr>
+nnoremap <leader>q :edit ~/buffer<cr>
 
 set pastetoggle=<F10>
 
 set background=dark
-"let g:solarized_termcolors=256
-"let g:solarized_termtrans=1
-"colorscheme solarized
 let g:airline_powerline_fonts=1
 let g:gruvbox_contrast_dark='dark'
 let g:gruvbox_transparent_bg=1
@@ -323,50 +317,15 @@ let g:bufExplorerShowRelativePath=1
 " Always show the airline bar
 set laststatus=2
 if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 let g:airline_powerline_fonts = 1
 let g:airline_symbols.maxlinenr = 'Ξ'
 
-au BufNewFile,BufRead ~/.mutt/temp/* setlocal ft=mail
-
-"mail options {{{
-au Filetype mail call SetMailOpts()
-
-function! SetMailOpts()
-    "source ~/.vim/autofix.vimrc " auto-correct
-
-    setlocal spell
-    setlocal nohls
-
-    setlocal fo+=aw
-
-    nmap <F1> gqap
-    nmap <F2> gqqj
-    nmap <F3> kgqj
-    map! <F1> <ESC>gqapi
-    map! <F2> <ESC>gqqji
-    map! <F3> <ESC>kgqji
-endfunction
-"}}}
-
-"set up F7 to toggle the NERDtree
-nnoremap <silent> <F7> :NERDTreeToggle<CR>
-
 "find recursively tags
 set tags=./tags,./../tags,./*/tags,./.git/tags;
-
-"scim stuff
-function! Vietnamese()
-    au InsertEnter,InsertLeave * call ToggleScim()
-endfunction
-
-function! ToggleScim()
-    silent !xdotool key ctrl+space
-    redraw!
-endfunction
 
 function! InsertMagicHyphen(hyphen)
     let vpos = virtcol(".") - 2
@@ -392,8 +351,8 @@ endfunction
 "Supertab literal
 "let g:SuperTabMappingTabLiteral='<c-v>'
 
-"Open ag.vim
-nnoremap <leader>a :Ag
+"Open ripgrep search
+nnoremap <leader>a :Rg
 
 "Ctrl-P stuff
 let g:ctrlp_max_files = 20000
@@ -401,30 +360,7 @@ let g:ctrlp_max_depth = 10
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path = 0
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files', 'ag %s -l --nocolor --hidden -g ""']
-
-" toggle gundo
-nnoremap <leader>u :GundoToggle<CR>
-
-"Syntastic
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-
-"map _u :call ID_search()<Bar>execute "/\\<" . g:word . "\\>"<CR>
-"map _n :n<Bar>execute "/\\<" . g:word . "\\>"<CR>
-"
-"function! ID_search()
-"    let g:word = expand("<cword>")
-"    let x = system("lid --key=none ". g:word)
-"    let x = substitute(x, "\n", " ", "g")
-"    execute "next " . x
-"endfun
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files', 'rg --files --hidden -g "!.git" %s']
 
 function! s:Shell(...)
     let curline=line ('.')
@@ -473,13 +409,13 @@ function! Paste(paste_before, use_primary)
     let @q = at_q
 endfunction
 
-vmap <silent> <leader>y y:call Yank()<cr>
-vmap <silent> <leader>gy y:call YankClip()<cr>
-nmap <silent> <leader>yy yy:call Yank()<cr>
-nmap <silent> <leader>p :call Paste(0, 1)<cr>
-nmap <silent> <leader>P :call Paste(1, 1)<cr>
-nmap <silent> <leader>gp :call Paste(0, 0)<cr>
-nmap <silent> <leader>gP :call Paste(1, 0)<cr>
+xnoremap <silent> <leader>y y:call Yank()<cr>
+xnoremap <silent> <leader>gy y:call YankClip()<cr>
+nnoremap <silent> <leader>yy yy:call Yank()<cr>
+nnoremap <silent> <leader>p :call Paste(0, 1)<cr>
+nnoremap <silent> <leader>P :call Paste(1, 1)<cr>
+nnoremap <silent> <leader>gp :call Paste(0, 0)<cr>
+nnoremap <silent> <leader>gP :call Paste(1, 0)<cr>
 
 "highlight DiffAdd cterm=none ctermfg=fg ctermbg=Blue gui=none guifg=fg guibg=Blue
 "highlight DiffDelete cterm=none ctermfg=fg ctermbg=Blue gui=none guifg=fg guibg=Blue
@@ -511,4 +447,3 @@ let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
-

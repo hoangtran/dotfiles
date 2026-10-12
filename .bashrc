@@ -42,9 +42,9 @@ export EDITOR=vim
 export TERMINAL=urxvtc
 export BUILDROOT_DL_DIR=/hq/pkgs
 export BR2_DL_DIR=/hq/pkgs
-export LEGO_DOWNLOAD_DIR=/hq/pkgs
-export LEGO_TOOLCHAIN_BASE=/opt/gws
-export LEGO_DONT_BUILD_TOOLCHAIN=1
+#export LEGO_DOWNLOAD_DIR=/hq/pkgs
+#export LEGO_TOOLCHAIN_BASE=/opt/gws
+#export LEGO_DONT_BUILD_TOOLCHAIN=1
 export NO_LICENSE_BUNDLE=1
 export LESS='-R'
 export TFTPDIR=/nfsroot
@@ -224,7 +224,7 @@ extract() {
     if [[ -r $i ]]; then
         c=''
         case $i in
-          *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lz|lzma|xz)))))
+          *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lz|lzma|xz|zst)))))
                  c='bsdtar xvf' ;;
           *.7z)  c='7z x'       ;;
           *.Z)   c='uncompress' ;;
@@ -234,6 +234,7 @@ extract() {
           *.rar) c='unrar x'    ;;
           *.xz)  c='unxz'       ;;
           *.zip) c='unzip'      ;;
+	  *.zst) c='unzstd'     ;;
           *)     echo "$0: cannot extract \`$i': Unrecognized file extension" >&2; e=1 ;;
         esac
         [[ $c ]] && command $c "$i"
@@ -376,6 +377,9 @@ function env() {
 # Todo alias
 alias t='todo.sh'
 
+whatsize() {
+	du -h --max-depth=1 --exclude=/{proc,sys,dev,run} -t 1 ${1:-/} 2>/dev/null | sort -hr 
+}
 # WELCOME SCREEN
 #######################################################
 #
