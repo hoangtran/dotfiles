@@ -90,6 +90,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'rhysd/vim-clang-format'
 Plug 'lervag/vimtex'
+Plug 'ludovicchabant/vim-gutentags'
 
 call plug#end()
 
@@ -326,6 +327,9 @@ let g:airline_symbols.maxlinenr = 'Ξ'
 
 "find recursively tags
 set tags=./tags,./../tags,./*/tags,./.git/tags;
+
+"Generate and update tags in the background as files are saved.
+let g:gutentags_ctags_tagfile = '.git/tags'
 
 function! InsertMagicHyphen(hyphen)
     let vpos = virtcol(".") - 2

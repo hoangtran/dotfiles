@@ -1,6 +1,6 @@
 [user]
 	name = Hoang Tran
-	email = hoang.tran@axon-networks.com
+	email = hoang.tran@vnoss.org
 [color]
 	branch = auto
 	diff = auto
@@ -8,7 +8,7 @@
 	interactive = auto
 	status = auto
 [alias]
-	la = !git config -l | grep alias | cut -c 7-
+	la = !git config --get-regexp '^alias[.]'
 	last = cat-file commit HEAD
 	st = status
 	ci = commit
@@ -29,23 +29,25 @@
 	autosetuprebase = always
 [credential]
 	helper = cache --timeout=3600
-[sendemail]
-	smtpencryption = tls
-	smtpserver = smtp.gmail.com
-	smtpuser = hoang.tran@greenwavereality.com
-	smtpserverport = 587
 [push]
 	default = simple
+	autoSetupRemote = true
+[fetch]
+	prune = true
 [core]
 	excludesfile = /home/hoangtran/.global_ignore
+	untrackedCache = true
 [init]
 	templatedir = ~/.git_template
+	defaultBranch = main
 [help]
 	autocorrect = 8
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
 [merge]
 	tool = fugitive
+[rerere]
+	enabled = true
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential

@@ -1,5 +1,2 @@
 #!/bin/sh
-
-cwd=`dirname $0`
-
-$cwd/ctags > /dev/null 2>&1 &
+# Tags are managed incrementally by vim-gutentags.
