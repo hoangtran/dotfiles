@@ -1,0 +1,250 @@
+# GlazeWM config ported from i3 (github.com/hoangtran/dotfiles .config/i3/config).
+# $mod = alt, since Windows reserves most win+ shortcuts.
+# Original GlazeWM defaults are in config.yaml.default.
+
+general:
+  # i3: bar { ... } -> Zebar, using the i3bar pack in ~/.glzr/zebar/i3bar.
+  startup_commands: ['shell-exec %LOCALAPPDATA%\Programs\Zebar\zebar.exe']
+  shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
+  config_reload_commands: []
+  focus_follows_cursor: false
+
+  # i3: workspace_auto_back_and_forth yes
+  toggle_workspace_on_refocus: true
+
+  cursor_jump:
+    enabled: true
+    trigger: 'monitor_focus'
+
+  hide_method: 'cloak'
+  show_all_in_taskbar: false
+
+gaps:
+  scale_with_dpi: true
+  inner_gap: '2px'
+  outer_gap:
+    # 24px Zebar bar + 2px gap.
+    top: '26px'
+    right: '2px'
+    bottom: '2px'
+    left: '2px'
+
+# Gruvbox colours from the i3 theme ($aqua focused, $darkgray others).
+window_effects:
+  focused_window:
+    border:
+      enabled: true
+      color: '#689d68'
+    # i3: default_border pixel. Off by default because some apps render
+    # badly without a title bar; set to true to try it.
+    hide_title_bar:
+      enabled: false
+    corner_style:
+      enabled: true
+      style: 'square'
+    transparency:
+      enabled: false
+      opacity: '95%'
+  other_windows:
+    border:
+      enabled: true
+      color: '#1d2021'
+    hide_title_bar:
+      enabled: false
+    corner_style:
+      enabled: true
+      style: 'square'
+    transparency:
+      enabled: false
+      opacity: '0%'
+
+window_behavior:
+  initial_state: 'tiling'
+  state_defaults:
+    floating:
+      centered: true
+      shown_on_top: false
+    fullscreen:
+      maximized: false
+      shown_on_top: false
+
+workspaces:
+  - name: '1'
+    display_name: '1: term'
+  - name: '2'
+    display_name: '2: web'
+  - name: '3'
+    display_name: '3: mail'
+  - name: '4'
+    display_name: '4: file'
+  - name: '5'
+    display_name: '5: music'
+  - name: '6'
+  - name: '7'
+  - name: '8'
+  - name: '9'
+  - name: '10'
+
+window_rules:
+  - commands: ['ignore']
+    match:
+      - window_process: { equals: 'zebar' }
+      - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
+        window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
+      - window_process: { equals: 'PowerToys' }
+        window_class: { regex: 'HwndWrapper\[PowerToys\.PowerAccent.*?\]' }
+      - window_title: { equals: 'Command Palette' }
+        window_class: { equals: 'WinUIDesktopWin32WindowClass' }
+      - window_process: { equals: 'PowerToys' }
+        window_title: { regex: '.*? - Peek' }
+      - window_process: { equals: 'Lively' }
+        window_class: { regex: 'HwndWrapper' }
+      - window_process: { equals: 'EXCEL' }
+        window_class: { not_regex: 'XLMAIN' }
+      - window_process: { equals: 'WINWORD' }
+        window_class: { not_regex: 'OpusApp' }
+      - window_process: { equals: 'POWERPNT' }
+        window_class: { not_regex: 'PPTFrameClass' }
+
+binding_modes:
+  # i3: mode "resize" (10 ppt steps, same directions as i3)
+  - name: 'resize'
+    keybindings:
+      - commands: ['resize --width -10%']
+        bindings: ['h', 'left']
+      - commands: ['resize --height +10%']
+        bindings: ['j', 'down']
+      - commands: ['resize --height -10%']
+        bindings: ['k', 'up']
+      - commands: ['resize --width +10%']
+        bindings: ['l', 'right']
+      - commands: ['wm-disable-binding-mode --name resize']
+        bindings: ['escape', 'enter', 'alt+r']
+
+keybindings:
+  # --- launchers ---
+  # i3: $mod+t exec i3-sensible-terminal
+  - commands: ['shell-exec wt']
+    bindings: ['alt+t']
+  # i3: $mod+Shift+f exec firefox -> Edge (default browser here)
+  - commands: ['shell-exec msedge']
+    bindings: ['alt+shift+f']
+  # i3: $mod+p rofi drun / $mod+o rofi window -- no equivalent yet, left free.
+
+  # --- focus / move ---
+  - commands: ['focus --direction left']
+    bindings: ['alt+h', 'alt+left']
+  - commands: ['focus --direction down']
+    bindings: ['alt+j', 'alt+down']
+  - commands: ['focus --direction up']
+    bindings: ['alt+k', 'alt+up']
+  - commands: ['focus --direction right']
+    bindings: ['alt+l', 'alt+right']
+
+  - commands: ['move --direction left']
+    bindings: ['alt+shift+h', 'alt+shift+left']
+  - commands: ['move --direction down']
+    bindings: ['alt+shift+j', 'alt+shift+down']
+  - commands: ['move --direction up']
+    bindings: ['alt+shift+k', 'alt+shift+up']
+  - commands: ['move --direction right']
+    bindings: ['alt+shift+l', 'alt+shift+right']
+
+  # --- splits / layout ---
+  # i3: $mod+bar split h
+  - commands: ['set-tiling-direction horizontal']
+    bindings: ['alt+shift+oem_pipe']
+  # i3: $mod+minus split v
+  - commands: ['set-tiling-direction vertical']
+    bindings: ['alt+oem_minus']
+  # i3: $mod+e layout toggle split
+  - commands: ['toggle-tiling-direction']
+    bindings: ['alt+e']
+  # i3: $mod+s stacking, $mod+w tabbed, $mod+a/d focus parent/child --
+  # not supported by GlazeWM.
+
+  # i3: $mod+f fullscreen toggle
+  - commands: ['toggle-fullscreen']
+    bindings: ['alt+f']
+  # i3: $mod+Shift+space floating toggle
+  - commands: ['toggle-floating --centered']
+    bindings: ['alt+shift+space']
+  # i3: $mod+space focus mode_toggle
+  - commands: ['wm-cycle-focus']
+    bindings: ['alt+space']
+
+  # i3: $mod+Shift+c kill
+  - commands: ['close']
+    bindings: ['alt+shift+c']
+
+  # i3: scratchpad -- no scratchpad in GlazeWM; minimize is the closest.
+  - commands: ['toggle-minimized']
+    bindings: ['alt+shift+oem_plus']
+
+  # i3: $mod+r mode "resize"
+  - commands: ['wm-enable-binding-mode --name resize']
+    bindings: ['alt+r']
+
+  # --- WM control ---
+  # i3: $mod+q reload
+  - commands: ['wm-reload-config']
+    bindings: ['alt+q']
+  # i3: $mod+Shift+q restart (closest: redraw all windows)
+  - commands: ['wm-redraw']
+    bindings: ['alt+shift+q']
+  # i3: $mod+Shift+e exit
+  - commands: ['wm-exit']
+    bindings: ['alt+shift+e']
+  # GlazeWM extra: pause tiling for awkward apps.
+  - commands: ['wm-toggle-pause']
+    bindings: ['alt+shift+p']
+
+  # --- workspaces ---
+  # i3: $mod+Tab workspace back_and_forth (overrides Windows alt+tab)
+  - commands: ['focus --recent-workspace']
+    bindings: ['alt+tab']
+  # i3: $mod+Shift+Tab move container to workspace back_and_forth
+  - commands: ['move --recent-workspace']
+    bindings: ['alt+shift+tab']
+
+  - commands: ['focus --workspace 1']
+    bindings: ['alt+1']
+  - commands: ['focus --workspace 2']
+    bindings: ['alt+2']
+  - commands: ['focus --workspace 3']
+    bindings: ['alt+3']
+  - commands: ['focus --workspace 4']
+    bindings: ['alt+4']
+  - commands: ['focus --workspace 5']
+    bindings: ['alt+5']
+  - commands: ['focus --workspace 6']
+    bindings: ['alt+6']
+  - commands: ['focus --workspace 7']
+    bindings: ['alt+7']
+  - commands: ['focus --workspace 8']
+    bindings: ['alt+8']
+  - commands: ['focus --workspace 9']
+    bindings: ['alt+9']
+  - commands: ['focus --workspace 10']
+    bindings: ['alt+0']
+
+  - commands: ['move --workspace 1']
+    bindings: ['alt+shift+1']
+  - commands: ['move --workspace 2']
+    bindings: ['alt+shift+2']
+  - commands: ['move --workspace 3']
+    bindings: ['alt+shift+3']
+  - commands: ['move --workspace 4']
+    bindings: ['alt+shift+4']
+  - commands: ['move --workspace 5']
+    bindings: ['alt+shift+5']
+  - commands: ['move --workspace 6']
+    bindings: ['alt+shift+6']
+  - commands: ['move --workspace 7']
+    bindings: ['alt+shift+7']
+  - commands: ['move --workspace 8']
+    bindings: ['alt+shift+8']
+  - commands: ['move --workspace 9']
+    bindings: ['alt+shift+9']
+  - commands: ['move --workspace 10']
+    bindings: ['alt+shift+0']

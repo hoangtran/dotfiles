@@ -1,0 +1,85 @@
+/* Nerd Font icons (https://www.nerdfonts.com/cheat-sheet). */
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
+/* Gruvbox palette from the i3 config. */
+:root {
+  --bg: #282828;
+  --red: #cc241d;
+  --yellow: #d79921;
+  --aqua: #689d68;
+  --darkgray: #1d2021;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--yellow);
+  font-family: 'Fira Sans', 'Segoe UI', sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+}
+
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100%;
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: stretch;
+}
+
+/* i3bar workspace buttons: inactive_workspace / focused_workspace. */
+.ws {
+  background: var(--darkgray);
+  color: var(--yellow);
+  border: 1px solid var(--darkgray);
+  font: inherit;
+  padding: 0 8px;
+  margin-right: 1px;
+  cursor: pointer;
+}
+
+.ws.focused {
+  background: var(--aqua);
+  border-color: var(--aqua);
+  color: var(--darkgray);
+}
+
+.mode {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  margin-left: 4px;
+  background: var(--darkgray);
+}
+
+.mode.urgent {
+  background: var(--red);
+  color: var(--bg);
+}
+
+.block {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.block.warn {
+  color: var(--red);
+}
+
+i {
+  margin-right: 5px;
+}

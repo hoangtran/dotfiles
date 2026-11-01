@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      import React, { useState, useEffect } from 'https://esm.sh/react@18';
+      import { createRoot } from 'https://esm.sh/react-dom@18/client';
+      import * as zebar from 'https://esm.sh/zebar@3.0';
+
+      const providers = zebar.createProviderGroup({
+        glazewm: { type: 'glazewm' },
+        network: { type: 'network' },
+        cpu: { type: 'cpu' },
+        memory: { type: 'memory' },
+        battery: { type: 'battery' },
+        date: { type: 'date', formatting: 'EEE d MMM  HH:mm' },
+      });
+
+      createRoot(document.getElementById('root')).render(<App />);
+
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
+
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        const gwm = output.glazewm;
+
+        function networkLabel(net) {
+          const iface = net.defaultInterface;
+          if (!iface) return <><i className="nf nf-md-wifi_off"></i>down</>;
+          if (iface.type === 'wifi')
+            return (
+              <>
+                <i className="nf nf-md-wifi"></i>
+                {net.defaultGateway?.ssid ?? 'wifi'}
+              </>
+            );
+          if (iface.type === 'ethernet')
+            return <><i className="nf nf-md-ethernet"></i>eth</>;
+          return <><i className="nf nf-md-shield_lock_outline"></i>vpn</>;
+        }
+
+        return (
+          <div className="bar">
+            <div className="left">
+              {gwm &&
+                gwm.currentWorkspaces.map(ws => (
+                  <button
+                    key={ws.name}
+                    className={`ws ${ws.hasFocus ? 'focused' : ''}`}
+                    onClick={() =>
+                      gwm.runCommand(`focus --workspace ${ws.name}`)
+                    }
+                  >
+                    {ws.displayName ?? ws.name}
+                  </button>
+                ))}
+              {gwm &&
+                gwm.bindingModes.map(mode => (
+                  <span key={mode.name} className="mode">
+                    {mode.displayName ?? mode.name}
+                  </span>
+                ))}
+              {gwm?.isPaused && <span className="mode urgent">paused</span>}
+            </div>
+
+            <div className="right">
+              {output.network && (
+                <span className="block">{networkLabel(output.network)}</span>
+              )}
+              {output.cpu && (
+                <span
+                  className={`block ${output.cpu.usage > 85 ? 'warn' : ''}`}
+                >
+                  <i className="nf nf-oct-cpu"></i>
+                  {Math.round(output.cpu.usage)}%
+                </span>
+              )}
+              {output.memory && (
+                <span className="block">
+                  <i className="nf nf-fae-chip"></i>
+                  {Math.round(output.memory.usage)}%
+                </span>
+              )}
+              {output.battery && (
+                <span
+                  className={`block ${
+                    output.battery.chargePercent < 15 &&
+                    !output.battery.isCharging
+                      ? 'warn'
+                      : ''
+                  }`}
+                >
+                  <i
+                    className={`nf ${
+                      output.battery.isCharging
+                        ? 'nf-md-battery_charging'
+                        : 'nf-md-battery'
+                    }`}
+                  ></i>
+                  {Math.round(output.battery.chargePercent)}%
+                </span>
+              )}
+              {output.date && (
+                <span className="block">
+                  <i className="nf nf-md-clock_outline"></i>
+                  {output.date.formatted}
+                </span>
+              )}
+            </div>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>
