@@ -20,7 +20,7 @@ body,
 body {
   background: var(--bg);
   color: var(--yellow);
-  font-family: 'Fira Sans', 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   font-size: 12px;
   overflow: hidden;
   user-select: none;
