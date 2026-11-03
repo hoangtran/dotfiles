@@ -7,7 +7,8 @@ general:
   startup_commands: ['shell-exec %LOCALAPPDATA%\Programs\Zebar\zebar.exe']
   shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
   config_reload_commands: []
-  focus_follows_cursor: false
+  # i3: focus_follows_mouse yes (the i3 default)
+  focus_follows_cursor: true
 
   # i3: workspace_auto_back_and_forth yes
   toggle_workspace_on_refocus: true
