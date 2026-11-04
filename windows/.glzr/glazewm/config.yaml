@@ -10,8 +10,10 @@ general:
   # i3: focus_follows_mouse yes (the i3 default)
   focus_follows_cursor: true
 
-  # i3: workspace_auto_back_and_forth yes
-  toggle_workspace_on_refocus: true
+  # i3: workspace_auto_back_and_forth yes. Off because it breaks the window
+  # rules below (moving to the current workspace sends the window elsewhere).
+  # alt+tab still does back_and_forth.
+  toggle_workspace_on_refocus: false
 
   cursor_jump:
     enabled: true
@@ -73,13 +75,13 @@ workspaces:
   - name: '1'
     display_name: '1: term'
   - name: '2'
-    display_name: '2: web'
+    display_name: '2: agent'
   - name: '3'
-    display_name: '3: mail'
+    display_name: '3: www'
   - name: '4'
     display_name: '4: file'
   - name: '5'
-    display_name: '5: music'
+    display_name: '5: misc'
   - name: '6'
   - name: '7'
   - name: '8'
@@ -106,6 +108,23 @@ window_rules:
         window_class: { not_regex: 'OpusApp' }
       - window_process: { equals: 'POWERPNT' }
         window_class: { not_regex: 'PPTFrameClass' }
+
+  # i3: assign [class="..."] -- send new windows to a workspace and follow them.
+  - commands: ['move --workspace 3', 'focus --workspace 3']
+    match:
+      - window_process: { equals: 'msedge' }
+      - window_process: { equals: 'chrome' }
+  - commands: ['move --workspace 2', 'focus --workspace 2']
+    match:
+      - window_process: { equals: 'claude' }
+  - commands: ['move --workspace 1', 'focus --workspace 1']
+    match:
+      - window_process: { equals: 'WindowsTerminal' }
+  - commands: ['move --workspace 4', 'focus --workspace 4']
+    match:
+      # explorer.exe also runs the desktop and taskbar; only match its folder windows.
+      - window_process: { equals: 'explorer' }
+        window_class: { equals: 'CabinetWClass' }
 
 binding_modes:
   # i3: mode "resize" (10 ppt steps, same directions as i3)
