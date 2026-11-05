@@ -75,7 +75,7 @@ workspaces:
   - name: '1'
     display_name: '1: term'
   - name: '2'
-    display_name: '2: agent'
+    display_name: '2: dev'
   - name: '3'
     display_name: '3: www'
   - name: '4'
