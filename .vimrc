@@ -91,6 +91,7 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'rhysd/vim-clang-format'
 Plug 'lervag/vimtex'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'prabirshrestha/vim-lsp'
 
 call plug#end()
 
@@ -451,3 +452,48 @@ let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
+
+"vim-lsp with clangd (C/C++)
+"clangd needs compile_commands.json at the project root:
+"  kernel: make compile_commands.json  (or scripts/clang-tools/gen_compile_commands.py)
+"  cmake : -DCMAKE_EXPORT_COMPILE_COMMANDS=ON,  make: bear -- make
+"Add your cross toolchain path to --query-driver, e.g. /opt/*/bin/*-gcc
+if executable('clangd')
+    augroup vimrc_lsp_clangd
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'clangd',
+                    \ 'cmd': {server_info->['clangd',
+                    \     '--background-index',
+                    \     '--header-insertion=never',
+                    \     '--query-driver=/usr/bin/*gcc,/usr/bin/*g++']},
+                    \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
+                    \ })
+    augroup END
+endif
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete      "complete with <C-x><C-o>
+    setlocal signcolumn=yes
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gD <plug>(lsp-declaration)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> K <plug>(lsp-hover)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> <leader>ca <plug>(lsp-code-action)
+    nmap <buffer> <leader>sh <plug>(lsp-switch-source-header)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> <leader>ld <plug>(lsp-document-diagnostics)
+endfunction
+
+augroup vimrc_lsp_install
+    autocmd!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+let g:lsp_diagnostics_echo_cursor = 1     "show diagnostic for current line in the cmdline
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_document_highlight_enabled = 0
