@@ -23,17 +23,59 @@
         network: { type: 'network' },
         cpu: { type: 'cpu' },
         memory: { type: 'memory' },
-        battery: { type: 'battery' },
         date: { type: 'date', formatting: 'EEE d MMM  HH:mm' },
       });
+
+      // Battery runs on its own provider. It only emits when the battery
+      // changes, and twice it emitted an error and stayed dead (output null,
+      // block gone) until Zebar restarted; restart() on the same provider
+      // doesn't revive it. So on an error, keep showing the last reading
+      // (dimmed) and replace the provider with a new one.
+      const battery = { output: null, error: null, provider: null };
+      const batteryListeners = new Set();
+      const notifyBattery = () => batteryListeners.forEach(fn => fn());
+      let batteryRetry = null;
+
+      function startBattery() {
+        const p = zebar.createProvider({ type: 'battery' });
+        battery.provider = p;
+        p.onOutput(out => {
+          if (battery.provider !== p) return;
+          battery.output = out;
+          battery.error = null;
+          notifyBattery();
+        });
+        p.onError(err => {
+          if (battery.provider !== p) return;
+          battery.error = err;
+          notifyBattery();
+          replaceBattery();
+        });
+      }
+
+      function replaceBattery() {
+        if (batteryRetry) return;
+        batteryRetry = setTimeout(() => {
+          batteryRetry = null;
+          const old = battery.provider;
+          startBattery();
+          old?.stop().catch(() => {});
+        }, 10_000);
+      }
+
+      startBattery();
 
       createRoot(document.getElementById('root')).render(<App />);
 
       function App() {
         const [output, setOutput] = useState(providers.outputMap);
+        const [, setBatteryTick] = useState(0);
 
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
+          const onBattery = () => setBatteryTick(n => n + 1);
+          batteryListeners.add(onBattery);
+          return () => batteryListeners.delete(onBattery);
         }, []);
 
         const gwm = output.glazewm;
@@ -95,24 +137,30 @@
                   {Math.round(output.memory.usage)}%
                 </span>
               )}
-              {output.battery && (
+              {battery.output ? (
                 <span
                   className={`block ${
-                    output.battery.chargePercent < 15 &&
-                    !output.battery.isCharging
+                    battery.output.chargePercent < 15 &&
+                    !battery.output.isCharging
                       ? 'warn'
                       : ''
-                  }`}
+                  } ${battery.error ? 'stale' : ''}`}
+                  title={battery.error ?? ''}
                 >
                   <i
                     className={`nf ${
-                      output.battery.isCharging
+                      battery.output.isCharging
                         ? 'nf-md-battery_charging'
                         : 'nf-md-battery'
                     }`}
                   ></i>
-                  {Math.round(output.battery.chargePercent)}%
-                </span>
+                  {Math.round(battery.output.chargePercent)}%                </span>
+              ) : (
+                battery.error && (
+                  <span className="block stale" title={battery.error}>
+                    <i className="nf nf-md-battery_unknown"></i>?
+                  </span>
+                )
               )}
               {output.date && (
                 <span className="block">
