@@ -125,6 +125,9 @@ window_rules:
       # explorer.exe also runs the desktop and taskbar; only match its folder windows.
       - window_process: { equals: 'explorer' }
         window_class: { equals: 'CabinetWClass' }
+  - commands: ['move --workspace 5', 'focus --workspace 5']
+    match:
+      - window_process: { equals: 'Code' }
 
 binding_modes:
   # i3: mode "resize" (10 ppt steps, same directions as i3)
