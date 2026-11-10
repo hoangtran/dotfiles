@@ -25,7 +25,10 @@ fi
 
 #source /usr/share/autojump/autojump.bash
 source ~/bin/z.sh
-source ~/.vim/bundle/gruvbox/gruvbox_256palette.sh
+for _f in ~/.vim/bundle/gruvbox/gruvbox_256palette.sh ~/.vim/plugged/gruvbox/gruvbox_256palette.sh; do
+	[[ -f $_f ]] && source "$_f" && break
+done
+unset _f
 
 set -o notify           # Tell me when bg proccess finish
 set -o noclobber        # Warn of over write on redirects
@@ -404,5 +407,5 @@ alias cmakepp='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake'
 alias pkg='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake cmakepp_project_cli'
 alias cml='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake cmakelists_cli'
 export CMAKEPP_PATH=/home/hoangtran/src/bingo/cmakepp/cmakepp.cmake
-. "$HOME/.cargo/env"
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
