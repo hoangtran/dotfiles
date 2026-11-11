@@ -406,3 +406,5 @@ alias cml='cmake -P /home/hoangtran/src/bingo/cmakepp/cmakepp.cmake cmakelists_c
 export CMAKEPP_PATH=/home/hoangtran/src/bingo/cmakepp/cmakepp.cmake
 . "$HOME/.cargo/env"
 
+# private env vars (API keys...) live outside the dotfiles repo
+[ -r ~/.secrets ] && . ~/.secrets
