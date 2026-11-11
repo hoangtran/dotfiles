@@ -1,0 +1,157 @@
+/* Nerd Font icons (https://www.nerdfonts.com/cheat-sheet). */
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
+/* macOS-like menu bar: translucent dark strip, white text, system font. */
+:root {
+  --bar-bg: rgba(28, 28, 30, 0.72);
+  --fg: rgba(255, 255, 255, 0.92);
+  --fg-dim: rgba(255, 255, 255, 0.55);
+  --pill: rgba(255, 255, 255, 0.10);
+  --pill-focused: rgba(255, 255, 255, 0.85);
+  --warn: #ff6961;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: transparent;
+  color: var(--fg);
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+}
+
+.bar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  background: var(--bar-bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
+}
+
+.left,
+.right,
+.center {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.left {
+  flex: 1;
+  gap: 14px;
+}
+
+.right {
+  flex: 1;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+/* Workspaces sit in the true middle of the screen, like a notch. */
+.center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 6px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 15px;
+}
+
+.app {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.title {
+  color: var(--fg-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40vw;
+}
+
+.ws {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 9px;
+  background: var(--pill);
+  color: var(--fg-dim);
+  font-size: 11px;
+  transition: background 120ms, color 120ms;
+}
+
+.ws:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ws.focused {
+  background: var(--pill-focused);
+  color: #1c1c1e;
+  font-weight: 600;
+}
+
+.mode {
+  padding: 1px 8px;
+  border-radius: 9px;
+  background: rgba(10, 132, 255, 0.85);
+  font-size: 11px;
+}
+
+.mode.urgent {
+  background: var(--warn);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.item.warn {
+  color: var(--warn);
+}
+
+.item.stale {
+  opacity: 0.5;
+}
+
+.clock {
+  font-weight: 500;
+}
+
+i {
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+i.after {
+  margin: 0 0 0 4px;
+}
+
+i.only {
+  margin: 0;
+}

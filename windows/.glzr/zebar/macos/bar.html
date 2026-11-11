@@ -1,0 +1,211 @@
+<!doctype html>
+<!--
+  macOS-style menu bar for Zebar 3 + GlazeWM.
+  Left: logo menu, focused app name (bold) and the window title, like the
+  app menu. Middle: GlazeWM workspaces as small pills. Right: status icons
+  and a macOS-format clock ("Wed 11 Nov  3:42 PM").
+  Switch to it in ~/.glzr/zebar/settings.json ("pack": "macos"); the i3bar
+  pack next to it is the old look.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      import React, { useState, useEffect } from 'https://esm.sh/react@18';
+      import { createRoot } from 'https://esm.sh/react-dom@18/client';
+      import * as zebar from 'https://esm.sh/zebar@3.0';
+
+      const providers = zebar.createProviderGroup({
+        glazewm: { type: 'glazewm' },
+        network: { type: 'network' },
+        cpu: { type: 'cpu' },
+        memory: { type: 'memory' },
+        date: { type: 'date', formatting: 'EEE d MMM  h:mm a' },
+      });
+
+      // Battery on its own provider, recreated after an error (same fix as
+      // the i3bar pack: the provider only emits on change and can die).
+      const battery = { output: null, error: null, provider: null };
+      const batteryListeners = new Set();
+      const notifyBattery = () => batteryListeners.forEach(fn => fn());
+      let batteryRetry = null;
+
+      function startBattery() {
+        const p = zebar.createProvider({ type: 'battery' });
+        battery.provider = p;
+        p.onOutput(out => {
+          if (battery.provider !== p) return;
+          battery.output = out;
+          battery.error = null;
+          notifyBattery();
+        });
+        p.onError(err => {
+          if (battery.provider !== p) return;
+          battery.error = err;
+          notifyBattery();
+          replaceBattery();
+        });
+      }
+
+      function replaceBattery() {
+        if (batteryRetry) return;
+        batteryRetry = setTimeout(() => {
+          batteryRetry = null;
+          const old = battery.provider;
+          startBattery();
+          old?.stop().catch(() => {});
+        }, 10_000);
+      }
+
+      startBattery();
+
+      // Friendlier app names for the bold "app menu" label.
+      const APP_NAMES = {
+        Code: 'Code',
+        WindowsTerminal: 'Terminal',
+        msedge: 'Edge',
+        chrome: 'Chrome',
+        firefox: 'Firefox',
+        explorer: 'Finder',
+        claude: 'Claude',
+        'Claude': 'Claude',
+        OUTLOOK: 'Outlook',
+        'ms-teams': 'Teams',
+        Teams: 'Teams',
+        vivado: 'Vivado',
+        AcroRd32: 'Acrobat',
+        Acrobat: 'Acrobat',
+      };
+      const appName = p => APP_NAMES[p] ?? (p ? p[0].toUpperCase() + p.slice(1) : '');
+
+      createRoot(document.getElementById('root')).render(<App />);
+
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
+        const [, setBatteryTick] = useState(0);
+
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+          const onBattery = () => setBatteryTick(n => n + 1);
+          batteryListeners.add(onBattery);
+          return () => batteryListeners.delete(onBattery);
+        }, []);
+
+        const gwm = output.glazewm;
+        const fw = gwm?.focusedContainer?.type === 'window' ? gwm.focusedContainer : null;
+
+        function wifiIcon(net) {
+          const iface = net.defaultInterface;
+          if (!iface) return 'nf-md-wifi_off';
+          if (iface.type === 'wifi') return 'nf-md-wifi';
+          if (iface.type === 'ethernet') return 'nf-md-ethernet';
+          return 'nf-md-shield_lock_outline';
+        }
+
+        function batteryIcon(b) {
+          if (b.isCharging) return 'nf-md-battery_charging';
+          const level = Math.round(b.chargePercent / 10) * 10;
+          if (level >= 100) return 'nf-md-battery';
+          if (level <= 0) return 'nf-md-battery_outline';
+          return `nf-md-battery_${level}`;
+        }
+
+        return (
+          <div className="bar">
+            <div className="left">
+              <button
+                className="logo"
+                title="Start"
+                onClick={() => gwm?.runCommand('shell-exec explorer.exe shell:AppsFolder')}
+              >
+                <i className="nf nf-md-circle_slice_8"></i>
+              </button>
+              {fw && (
+                <>
+                  <span className="app">{appName(fw.processName)}</span>
+                  <span className="title">{fw.title}</span>
+                </>
+              )}
+            </div>
+
+            <div className="center">
+              {gwm &&
+                gwm.currentWorkspaces.map(ws => (
+                  <button
+                    key={ws.name}
+                    className={`ws ${ws.hasFocus ? 'focused' : ''}`}
+                    title={ws.displayName ?? ws.name}
+                    onClick={() => gwm.runCommand(`focus --workspace ${ws.name}`)}
+                  >
+                    {ws.hasFocus ? ws.displayName ?? ws.name : ws.name}
+                  </button>
+                ))}
+              {gwm &&
+                gwm.bindingModes.map(mode => (
+                  <span key={mode.name} className="mode">
+                    {mode.displayName ?? mode.name}
+                  </span>
+                ))}
+              {gwm?.isPaused && <span className="mode urgent">paused</span>}
+            </div>
+
+            <div className="right">
+              {output.cpu && (
+                <span
+                  className={`item ${output.cpu.usage > 85 ? 'warn' : ''}`}
+                  title={`CPU ${Math.round(output.cpu.usage)}%`}
+                >
+                  <i className="nf nf-oct-cpu"></i>
+                  {Math.round(output.cpu.usage)}%
+                </span>
+              )}
+              {output.memory && (
+                <span className="item" title={`Memory ${Math.round(output.memory.usage)}%`}>
+                  <i className="nf nf-fae-chip"></i>
+                  {Math.round(output.memory.usage)}%
+                </span>
+              )}
+              {battery.output ? (
+                <span
+                  className={`item ${
+                    battery.output.chargePercent < 15 && !battery.output.isCharging ? 'warn' : ''
+                  } ${battery.error ? 'stale' : ''}`}
+                  title={battery.error ?? ''}
+                >
+                  {Math.round(battery.output.chargePercent)}%
+                  <i className={`nf ${batteryIcon(battery.output)} after`}></i>
+                </span>
+              ) : (
+                battery.error && (
+                  <span className="item stale" title={battery.error}>
+                    <i className="nf nf-md-battery_unknown"></i>
+                  </span>
+                )
+              )}
+              {output.network && (
+                <span
+                  className="item"
+                  title={output.network.defaultGateway?.ssid ?? output.network.defaultInterface?.type ?? 'offline'}
+                >
+                  <i className={`nf ${wifiIcon(output.network)} only`}></i>
+                </span>
+              )}
+              {output.date && <span className="item clock">{output.date.formatted}</span>}
+            </div>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>
