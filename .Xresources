@@ -55,6 +55,14 @@ URxvt.perl-ext-common:  default,keyboard-select,matcher,selection-to-clipboard
 URxvt.keysym.M-Escape:  perl:keyboard-select:activate
 URxvt.keysym.M-s:       perl:keyboard-select:search
 URxvt.keysym.M-u: 	perl:url-select:select_next
+
+! clipboard: selection-to-clipboard puts every mouse selection in both PRIMARY
+! and CLIPBOARD; Ctrl+Shift+C/V copy/paste CLIPBOARD like other apps.
+! iso14755 (Ctrl+Shift unicode input) must be off for these keys to work.
+URxvt.iso14755:              false
+URxvt.iso14755_52:           false
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 !URxvt.url-select.autocopy: true
 !URxvt.url-select.launcher: /usr/bin/firefox
 !URxvt.url-select.button: 1

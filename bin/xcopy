@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# xcopy - copy stdin to both X selections (PRIMARY and CLIPBOARD), so the
+# text pastes with middle-click *and* Ctrl+V / Ctrl+Shift+V everywhere.
+#
+# Used by tmux (copy-command), GNU screen (copy mode) and vim (clipboard
+# provider).  Without an X display it just swallows the input.
+#
+
+[ -n "$DISPLAY" ] || { cat >/dev/null; exit 0; }
+
+tmp=$(mktemp "${TMPDIR:-/tmp}/xcopy.XXXXXX") || exit 1
+trap 'rm -f "$tmp"' EXIT
+cat >"$tmp"
+
+xsel --input --primary   <"$tmp"
+xsel --input --clipboard <"$tmp"

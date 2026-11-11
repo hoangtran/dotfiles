@@ -414,6 +414,27 @@ function! Paste(paste_before, use_primary)
     let @q = at_q
 endfunction
 
+" This vim is built without +xterm_clipboard, so wire the "+ (CLIPBOARD) and
+" "* (PRIMARY) registers to xsel through a clipboard provider (vim 9.2+).
+" "+y / "*y / "+p / "*p then work like in any other X app.
+if exists('v:clipproviders')
+    function! s:XselCopy(reg, type, lines)
+        let sel = a:reg ==# '+' ? '--clipboard' : '--primary'
+        silent call system('xsel --input ' . sel, a:lines)
+    endfunction
+    function! s:XselPaste(reg)
+        let sel = a:reg ==# '+' ? '--clipboard' : '--primary'
+        silent let lines = systemlist('xsel --output ' . sel)
+        return ['', lines]
+    endfunction
+    let v:clipproviders['xsel'] = {
+        \ 'available': {-> !empty($DISPLAY) && executable('xsel')},
+        \ 'copy':  {'+': function('s:XselCopy'),  '*': function('s:XselCopy')},
+        \ 'paste': {'+': function('s:XselPaste'), '*': function('s:XselPaste')},
+        \ }
+    set clipmethod^=xsel
+endif
+
 xnoremap <silent> <leader>y y:call Yank()<cr>
 xnoremap <silent> <leader>gy y:call YankClip()<cr>
 nnoremap <silent> <leader>yy yy:call Yank()<cr>
