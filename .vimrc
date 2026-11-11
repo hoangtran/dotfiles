@@ -452,21 +452,67 @@ highlight Comment cterm=italic
 "dirdiff
 let g:DirDiffExcludes = "*.d,*.o,*.cmd,*.orig,*.mod,.*.swp"
 
-let g:clang_format#style_options = {
-            \ "AccessModifierOffset" : -4,
-            \ "AllowShortIfStatementsOnASingleLine" : "true",
-            \ "AlwaysBreakTemplateDeclarations" : "true",
-            \ "Standard" : "C++11"}
+"clang-format (vim-clang-format)
+"Style always comes from the nearest .clang-format (~/.clang-format is the
+"kernel style); with no .clang-format above the file, nothing is formatted.
+let g:clang_format#detect_style_file = 1
+let g:clang_format#enable_fallback_style = 0
 
-" map to <Leader>cf in C++ code
-"autocmd FileType cpp,objc nnoremap <buffer><leader>cf :<C-u>ClangFormat<CR>
-"autocmd FileType cpp,objc vnoremap <buffer><leader>cf :ClangFormat<CR>
-" if you install vim-operator-user
-"autocmd FileType cpp,objc map <buffer><leader>x <Plug>(operator-clang-format)
-" Toggle auto formatting:
-"nmap <leader>C :ClangFormatAutoToggle<CR>
+"Format C/C++ on save:
+"  - file tracked in git: only the lines changed vs the index/HEAD, so
+"    saving in someone else's project never reformats code you didn't touch
+"  - new/untracked file or not in git: the whole file
+":ClangFormatOnSaveToggle or <leader>C turns it off/on; :ClangFormat and
+"<leader>cf format by hand (whole file, or the visual selection).
+let g:clang_format_on_save = 1
 
-"autocmd FileType cpp ClangFormatAutoEnable
+"Line ranges of the buffer that differ from the git index/HEAD version, or
+"-1 when the file is not tracked by git.  (vim-clang-format's own
+"get_git_diff drops the final newline, so it always flags the last line.)
+function! s:GitChangedRanges(file) abort
+    let git = 'git -C ' . shellescape(fnamemodify(a:file, ':h'))
+    let rel = ':./' . fnamemodify(a:file, ':t')
+    let orig = systemlist(git . ' show ' . shellescape(rel))
+    if v:shell_error != 0
+        return -1
+    endif
+    let tmp = tempname()
+    call writefile(orig, tmp)
+    "each changed/added hunk prints "first-last;" in new-file line numbers
+    let out = system('diff --old-group-format= --unchanged-group-format= ' .
+                \ '--new-group-format="%dF-%dL;" --changed-group-format="%dF-%dL;" ' .
+                \ shellescape(tmp) . ' -', getline(1, '$') + [''])
+    call delete(tmp)
+    return map(filter(split(out, ';'), 'v:val =~# ''^\d\+-\d\+$'''),
+                \ 'map(split(v:val, "-"), "str2nr(v:val)")')
+endfunction
+
+function! s:ClangFormatOnSave() abort
+    if !g:clang_format_on_save || clang_format#is_invalid()
+        return
+    endif
+    let ranges = s:GitChangedRanges(expand('%:p'))
+    if type(ranges) == v:t_number
+        call clang_format#replace(1, line('$'))
+    elseif !empty(ranges)
+        call clang_format#replace_ranges(ranges)
+    endif
+endfunction
+
+function! s:ClangFormatOnSaveToggle() abort
+    let g:clang_format_on_save = !g:clang_format_on_save
+    echo 'clang-format on save: ' . (g:clang_format_on_save ? 'on' : 'off')
+endfunction
+command! ClangFormatOnSaveToggle call s:ClangFormatOnSaveToggle()
+nnoremap <leader>C :ClangFormatOnSaveToggle<CR>
+
+augroup vimrc_clang_format
+    autocmd!
+    autocmd BufWritePre *.c,*.h,*.cc,*.cpp,*.cxx,*.hh,*.hpp,*.hxx
+                \ if &ft =~# '^\(c\|cpp\)$' | call s:ClangFormatOnSave() | endif
+    autocmd FileType c,cpp nnoremap <buffer> <leader>cf :<C-u>ClangFormat<CR>
+    autocmd FileType c,cpp vnoremap <buffer> <leader>cf :ClangFormat<CR>
+augroup END
 
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
