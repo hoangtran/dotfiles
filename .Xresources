@@ -2,23 +2,23 @@
 !#include "/home/hoangtran/.xcolors/solarized"
 #include "/home/hoangtran/.xcolors/gruvbox-dark.xresources"
 
-Xft.dpi: 192
+Xft.dpi: 144
 
 !URxvt.letterSpace: -1
 
 ! Fonts
 Xft.antialias: true
 Xft.hinting:   true
-Xft.rgba:      rgb
-Xft.hintstyle: hintfull
+Xft.rgba:      none
+Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
 ! Urxvt
 !URxvt*font: xft:MonacoForPowerline:size=8:antialias=true
 !URxvt*boldFont: xft:MonacoForPowerline:size=8:bold:antialias=true
-URxvt*font: xft:Cascadia Code PL:size=9:antialias=true
-URxvt*boldFont: xft:Cascadia Code PL:size=9:bold:antialias=true
-URxvt.italicFont: xft:Cascadia Code PL:italic:size=9:antialias=true
+URxvt*font: xft:Cascadia Code PL:size=11:antialias=true
+URxvt*boldFont: xft:Cascadia Code PL:size=11:bold:antialias=true
+URxvt.italicFont: xft:Cascadia Code PL:italic:size=11:antialias=true
 
 URxvt*scrollBar:  false
 URxvt*jumpScroll: true
@@ -87,7 +87,7 @@ xterm*background: #222222
 xterm*foreground: #dcdccc
 !xterm*font:       -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 !xterm*boldFont:   -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
-xterm*faceName:   xft:CascadiaCodePL:size=9:antialias=true
+xterm*faceName:   xft:CascadiaCodePL:size=11:antialias=true
 xterm*scrollBar:  false
 xterm*termName:   xterm-256color
 
