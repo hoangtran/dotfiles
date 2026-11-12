@@ -129,6 +129,10 @@ window_rules:
   - commands: ['move --workspace 5', 'focus --workspace 5']
     match:
       - window_process: { equals: 'Code' }
+  # Teams (main window, calls, chat pop-outs) always floats.
+  - commands: ['set-floating --centered']
+    match:
+      - window_process: { equals: 'ms-teams' }
 
 binding_modes:
   # i3: mode "resize" (10 ppt steps, same directions as i3)

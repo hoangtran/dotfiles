@@ -89,6 +89,39 @@
       };
       const appName = p => APP_NAMES[p] ?? (p ? p[0].toUpperCase() + p.slice(1) : '');
 
+      // Free-form workspaces. GlazeWM has no per-workspace layout, so on
+      // every GlazeWM update float any tiling window found on these
+      // workspaces. Windows moved out stay floating (alt+shift+space tiles
+      // them again).
+      const FREEFORM_WORKSPACES = ['5'];
+      const floatRequested = new Set();
+
+      function windowsIn(container) {
+        if (!container?.children) return [];
+        return container.children.flatMap(c =>
+          c.type === 'window' ? [c] : windowsIn(c),
+        );
+      }
+
+      providers.onOutput(() => {
+        const gwm = providers.outputMap.glazewm;
+        if (!gwm?.allWorkspaces) return;
+        for (const ws of gwm.allWorkspaces) {
+          if (!FREEFORM_WORKSPACES.includes(ws.name)) continue;
+          for (const w of windowsIn(ws)) {
+            if (w.state?.type !== 'tiling') {
+              floatRequested.delete(w.id);
+              continue;
+            }
+            if (floatRequested.has(w.id)) continue;
+            floatRequested.add(w.id);
+            gwm
+              .runCommand('set-floating --centered', w.id)
+              .catch(() => floatRequested.delete(w.id));
+          }
+        }
+      });
+
       createRoot(document.getElementById('root')).render(<App />);
 
       function App() {
