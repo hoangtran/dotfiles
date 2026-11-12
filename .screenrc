@@ -84,3 +84,9 @@ termcapinfo xterm-256color 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 termcapinfo rxvt-256color 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 
 windowlist string "%4n %h%=%f"
+
+# clipboard: mouse selection is done by urxvt itself (screen doesn't grab the
+# mouse), which already fills PRIMARY and CLIPBOARD.  In copy mode (C-a [),
+# mark the text with space and finish with '>' instead of the second space to
+# also send it to both X selections.
+bindkey -m > eval "stuff ' '" writebuf "exec sh -c '$HOME/bin/xcopy < $HOME/.screen/exchange'"

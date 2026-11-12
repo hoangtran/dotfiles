@@ -74,6 +74,15 @@ set ttimeoutlen=0
 
 syntax enable
 
+" Bootstrap vim-plug on a new machine, then install any missing plugins
+let s:plug_file = expand('~/.vim/autoload/plug.vim')
+if empty(glob(s:plug_file))
+    silent execute '!curl -fLo ' . shellescape(s:plug_file) . ' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+endif
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+    \| PlugInstall --sync | source $MYVIMRC
+    \| endif
+
 call plug#begin('~/.vim/plugged')
 
 "Plug 'OmniCppComplete'
@@ -91,6 +100,7 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'rhysd/vim-clang-format'
 Plug 'lervag/vimtex'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'prabirshrestha/vim-lsp'
 
 call plug#end()
 
@@ -306,7 +316,7 @@ let g:airline_powerline_fonts=1
 let g:gruvbox_contrast_dark='dark'
 let g:gruvbox_transparent_bg=1
 let g:gruvbox_termcolors=256
-colorscheme gruvbox
+silent! colorscheme gruvbox
 
 highlight clear SignColumn
 
@@ -413,6 +423,27 @@ function! Paste(paste_before, use_primary)
     let @q = at_q
 endfunction
 
+" This vim is built without +xterm_clipboard, so wire the "+ (CLIPBOARD) and
+" "* (PRIMARY) registers to xsel through a clipboard provider (vim 9.2+).
+" "+y / "*y / "+p / "*p then work like in any other X app.
+if exists('v:clipproviders')
+    function! s:XselCopy(reg, type, lines)
+        let sel = a:reg ==# '+' ? '--clipboard' : '--primary'
+        silent call system('xsel --input ' . sel, a:lines)
+    endfunction
+    function! s:XselPaste(reg)
+        let sel = a:reg ==# '+' ? '--clipboard' : '--primary'
+        silent let lines = systemlist('xsel --output ' . sel)
+        return ['', lines]
+    endfunction
+    let v:clipproviders['xsel'] = {
+        \ 'available': {-> !empty($DISPLAY) && executable('xsel')},
+        \ 'copy':  {'+': function('s:XselCopy'),  '*': function('s:XselCopy')},
+        \ 'paste': {'+': function('s:XselPaste'), '*': function('s:XselPaste')},
+        \ }
+    set clipmethod^=xsel
+endif
+
 xnoremap <silent> <leader>y y:call Yank()<cr>
 xnoremap <silent> <leader>gy y:call YankClip()<cr>
 nnoremap <silent> <leader>yy yy:call Yank()<cr>
@@ -430,24 +461,115 @@ highlight Comment cterm=italic
 "dirdiff
 let g:DirDiffExcludes = "*.d,*.o,*.cmd,*.orig,*.mod,.*.swp"
 
-let g:clang_format#style_options = {
-            \ "AccessModifierOffset" : -4,
-            \ "AllowShortIfStatementsOnASingleLine" : "true",
-            \ "AlwaysBreakTemplateDeclarations" : "true",
-            \ "Standard" : "C++11"}
+"clang-format (vim-clang-format)
+"Style always comes from the nearest .clang-format (~/.clang-format is the
+"kernel style); with no .clang-format above the file, nothing is formatted.
+let g:clang_format#detect_style_file = 1
+let g:clang_format#enable_fallback_style = 0
 
-" map to <Leader>cf in C++ code
-"autocmd FileType cpp,objc nnoremap <buffer><leader>cf :<C-u>ClangFormat<CR>
-"autocmd FileType cpp,objc vnoremap <buffer><leader>cf :ClangFormat<CR>
-" if you install vim-operator-user
-"autocmd FileType cpp,objc map <buffer><leader>x <Plug>(operator-clang-format)
-" Toggle auto formatting:
-"nmap <leader>C :ClangFormatAutoToggle<CR>
+"Format C/C++ on save:
+"  - file tracked in git: only the lines changed vs the index/HEAD, so
+"    saving in someone else's project never reformats code you didn't touch
+"  - new/untracked file or not in git: the whole file
+":ClangFormatOnSaveToggle or <leader>C turns it off/on; :ClangFormat and
+"<leader>cf format by hand (whole file, or the visual selection).
+let g:clang_format_on_save = 1
 
-"autocmd FileType cpp ClangFormatAutoEnable
+"Line ranges of the buffer that differ from the git index/HEAD version, or
+"-1 when the file is not tracked by git.  (vim-clang-format's own
+"get_git_diff drops the final newline, so it always flags the last line.)
+function! s:GitChangedRanges(file) abort
+    let git = 'git -C ' . shellescape(fnamemodify(a:file, ':h'))
+    let rel = ':./' . fnamemodify(a:file, ':t')
+    let orig = systemlist(git . ' show ' . shellescape(rel))
+    if v:shell_error != 0
+        return -1
+    endif
+    let tmp = tempname()
+    call writefile(orig, tmp)
+    "each changed/added hunk prints "first-last;" in new-file line numbers
+    let out = system('diff --old-group-format= --unchanged-group-format= ' .
+                \ '--new-group-format="%dF-%dL;" --changed-group-format="%dF-%dL;" ' .
+                \ shellescape(tmp) . ' -', getline(1, '$') + [''])
+    call delete(tmp)
+    return map(filter(split(out, ';'), 'v:val =~# ''^\d\+-\d\+$'''),
+                \ 'map(split(v:val, "-"), "str2nr(v:val)")')
+endfunction
+
+function! s:ClangFormatOnSave() abort
+    if !g:clang_format_on_save || clang_format#is_invalid()
+        return
+    endif
+    let ranges = s:GitChangedRanges(expand('%:p'))
+    if type(ranges) == v:t_number
+        call clang_format#replace(1, line('$'))
+    elseif !empty(ranges)
+        call clang_format#replace_ranges(ranges)
+    endif
+endfunction
+
+function! s:ClangFormatOnSaveToggle() abort
+    let g:clang_format_on_save = !g:clang_format_on_save
+    echo 'clang-format on save: ' . (g:clang_format_on_save ? 'on' : 'off')
+endfunction
+command! ClangFormatOnSaveToggle call s:ClangFormatOnSaveToggle()
+nnoremap <leader>C :ClangFormatOnSaveToggle<CR>
+
+augroup vimrc_clang_format
+    autocmd!
+    autocmd BufWritePre *.c,*.h,*.cc,*.cpp,*.cxx,*.hh,*.hpp,*.hxx
+                \ if &ft =~# '^\(c\|cpp\)$' | call s:ClangFormatOnSave() | endif
+    autocmd FileType c,cpp nnoremap <buffer> <leader>cf :<C-u>ClangFormat<CR>
+    autocmd FileType c,cpp vnoremap <buffer> <leader>cf :ClangFormat<CR>
+augroup END
 
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
+
+"vim-lsp with clangd (C/C++)
+"clangd needs compile_commands.json at the project root:
+"  kernel: make compile_commands.json  (or scripts/clang-tools/gen_compile_commands.py)
+"  cmake : -DCMAKE_EXPORT_COMPILE_COMMANDS=ON,  make: bear -- make
+"Add your cross toolchain path to --query-driver, e.g. /opt/*/bin/*-gcc
+if executable('clangd')
+    augroup vimrc_lsp_clangd
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'clangd',
+                    \ 'cmd': {server_info->['clangd',
+                    \     '--background-index',
+                    \     '--header-insertion=never',
+                    \     '--query-driver=/usr/bin/*gcc,/usr/bin/*g++']},
+                    \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
+                    \ })
+    augroup END
+endif
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete      "complete with <C-x><C-o>
+    setlocal signcolumn=yes
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gD <plug>(lsp-declaration)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> K <plug>(lsp-hover)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> <leader>ca <plug>(lsp-code-action)
+    nmap <buffer> <leader>sh <plug>(lsp-switch-source-header)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> <leader>ld <plug>(lsp-document-diagnostics)
+endfunction
+
+augroup vimrc_lsp_install
+    autocmd!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+let g:lsp_diagnostics_echo_cursor = 1     "show diagnostic for current line in the cmdline
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_document_highlight_enabled = 0

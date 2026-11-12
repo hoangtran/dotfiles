@@ -3,11 +3,15 @@
 # ~/.xinitrc
 #
 
+# Full-range RGB (0-255); monitor HDMI Black Level must be Normal
+xrandr --output DP-2 --set "Broadcast RGB" Full
+
 sh $HOME/.fehbg &                           # set background
 #numlockx on &                               # numlock on
 setxkbmap -option terminate:ctrl_alt_bksp & # C-A-BS to kill X
 urxvtd -q -f -o &                           # start urxvt daemon
-xcompmgr -fF &                              # allow transparency
+#xcompmgr -fF &                             # replaced by picom (vsync)
+picom -b &                                  # compositor with vsync, no tearing
 xrdb $HOME/.Xresources &                    # load Xresources
 #xset fp+ /usr/share/fonts/local &           # add local fonts
 xset s 1200 1200 &                          # set monitor to sleep 20 mins
