@@ -3,7 +3,7 @@
 
 /* macOS-like menu bar: translucent dark strip, white text, system font. */
 :root {
-  --bar-bg: rgba(28, 28, 30, 0.72);
+  --bar-bg: rgba(28, 28, 30, 0.40);
   --fg: rgba(255, 255, 255, 0.92);
   --fg-dim: rgba(255, 255, 255, 0.55);
   --pill: rgba(255, 255, 255, 0.10);

@@ -24,14 +24,14 @@ general:
 
 gaps:
   scale_with_dpi: true
-  inner_gap: '10px'
+  inner_gap: '3px'
   outer_gap:
-    # macOS look: 28px bar + 10px gap. i3 look: 2px gaps, top 26px, square
+    # macOS look: 28px bar + 3px gap. i3 look: 2px gaps, top 26px, square
     # corners (config.yaml.i3-backup).
-    top: '38px'
-    right: '10px'
-    bottom: '10px'
-    left: '10px'
+    top: '31px'
+    right: '3px'
+    bottom: '3px'
+    left: '3px'
 
 # macOS greys (i3 gruvbox was #689d68 focused, #1d2021 others).
 window_effects:
