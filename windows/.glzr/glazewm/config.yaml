@@ -154,10 +154,26 @@ keybindings:
   # i3: $mod+t exec i3-sensible-terminal
   - commands: ['shell-exec wt']
     bindings: ['alt+t']
-  # i3: $mod+Shift+f exec firefox -> Edge (default browser here)
-  - commands: ['shell-exec msedge']
-    bindings: ['alt+shift+f']
-  # i3: $mod+p rofi drun / $mod+o rofi window -- no equivalent yet, left free.
+  # Edge (default browser here; i3 had firefox on $mod+Shift+f).
+  # focus-or-run.ps1 focuses the open window (again: cycles), else starts it.
+  - commands: ['shell-exec conhost.exe --headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\.glzr\glazewm\focus-or-run.ps1 -Process msedge -Run msedge']
+    bindings: ['alt+e']
+  # i3: $mod+p rofi drun -> Windows Search (type an app name, Enter).
+  - commands: ['shell-exec explorer.exe shell:::{2559a1f8-21d7-11d4-bdaf-00c04f60b9f0}']
+    bindings: ['alt+p']
+  # File Explorer: the open folder window (again: cycles), else a new one,
+  # which the rule below sends to workspace 4.
+  - commands: ['shell-exec conhost.exe --headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\.glzr\glazewm\focus-or-run.ps1 -Process explorer -Class CabinetWClass -Run explorer.exe']
+    bindings: ['alt+n']
+  # Claude Desktop: single-instance, so this brings the open window forward.
+  - commands: ['shell-exec %LOCALAPPDATA%\AnthropicClaude\claude.exe']
+    bindings: ['alt+c']
+  # Teams ("messages"); the open window if it is running.
+  - commands: ['shell-exec msteams:']
+    bindings: ['alt+m']
+  # Snipping Tool screenshot overlay, like win+shift+s.
+  - commands: ['shell-exec ms-screenclip:']
+    bindings: ['alt+shift+s']
 
   # --- focus / move ---
   - commands: ['focus --direction left']
@@ -185,9 +201,9 @@ keybindings:
   # i3: $mod+minus split v
   - commands: ['set-tiling-direction vertical']
     bindings: ['alt+oem_minus']
-  # i3: $mod+e layout toggle split
+  # i3: $mod+e layout toggle split (moved to alt+v: alt+e opens Edge)
   - commands: ['toggle-tiling-direction']
-    bindings: ['alt+e']
+    bindings: ['alt+v']
   # i3: $mod+s stacking, $mod+w tabbed, $mod+a/d focus parent/child --
   # not supported by GlazeWM.
 
